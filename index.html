@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Noughts</title>
+
+
+    
+    <link rel="stylesheet" href="index.css">
+
+    <script src="common.js"></script>
+    
+</head>
+<body>
+    <script src="lookUp3b3.js"></script>
+
+    <script>
+        var Board = {
+
+            emptySlots(board) {
+                var e = []
+                for (i=0; i < 9; i++) {
+                    if (board[i][0] != "X" && board[i][0] != "O") {
+                        e.push(i)
+                    }
+                }
+                return e
+            },
+
+drawBoard(board) {
+    for (let x = 0; x < HEIGHT; x++) {
+        let drawX = ""
+        for (let y = 0; y < WIDTH; y++) {
+        
+            let draw = board[(x*WIDTH)+y]
+            if (draw == "") draw = " "
+            drawX = drawX + draw
+        }
+        console.log("|"+drawX+"|"+"         "+(x+1))
+        
+    }
+    console.log(" ‾‾‾ ")
+},
+
+
+randomizeBoard:function(board) {
+    for (let i = 0; i < board.length; i++) {
+        let result = randInt(-1, 1)
+        if (result == 1) {
+            board[i] = "X"
+        }
+        else if (result == -1) {
+            board[i] = "O"
+        } else {
+            board[i] = ""
+        }
+    }
+    return board
+},
+
+compressBoard:function(board) {
+    let fenBoard = "",
+        lastPiece = "",
+        checkLastUpdate = false
+    for (let i=0;i<board.length;i++) {
+        let piece = board[i]
+        if (piece == "") piece = "_"
+        checkLastUpdate = false
+        if (lastPiece[0] == piece) {
+            lastPiece = `${lastPiece[0]}${parseInt(lastPiece[1])+1}`
+        } else {
+            fenBoard = fenBoard + lastPiece + "/"
+            lastPiece = `${piece}1`
+            checkLastUpdate = true
+        }
+        
+    }
+    fenBoard = fenBoard + lastPiece + "/"
+    
+    
+    return fenBoard
+},
+
+decompressBoard:function(board) {
+    let splitArray = board.split("/"),
+        returnArray = new Array()
+    for (let i = 1; i < splitArray.length-1; i++) {
+        const split = splitArray[i];
+        for (let i = 0; i < parseInt(split[1]); i++) {
+            let push = split[0]
+            if (split[0] == "_") push = ""
+            returnArray.push(push)
+        }
+    }
+    return returnArray
+},
+
+flipBoard:function(board) {
+    var temBoard = [...board]
+    for (let i = 0; i < temBoard.length; i++) {
+        if (temBoard[i] == "X") temBoard[i] = "A"
+        
+    }
+    for (let i = 0; i < temBoard.length; i++) {
+        if (temBoard[i] == "O") temBoard[i] = "X"
+        if (temBoard[i] == "A") temBoard[i] = "O"
+        
+    }
+
+    return temBoard
+},
+
+upsetMove(move) {
+    
+    return move
+}
+}
+    </script>
+    <script>
+        var currency = {
+            "tics":0,
+            "tacs":0,
+            "toes":0
+        }
+
+        function makePurchase(cost) {
+            var num = cost.split(" ")[0],
+                curr = cost.split(" ")[1]
+
+            if (currency[curr] >= num) {
+                currency[curr] -= num
+                return true
+            }
+            return false
+        }
+
+        var encomny = {
+            costs:{
+                "boards":{
+                    "basic": "50 tics",
+                    "gold-basic": "1000 tics",
+                },
+                "ais":{
+                    "untrained": "15 tics",
+                    "baby": "20 tics",
+                    "mid": "30 tics",
+                    "adult": "90 tics",
+                    "genius": "200 tics",
+
+                    "tactotic-c": "500 tics",
+                }
+                
+            },
+            startingStats:{
+                "boards":{
+                    "basic":{
+                        "skill":0.85,
+                        "speed":100,
+                        "disadvantage":0,
+                    },
+                    "gold-basic":{
+                        "skill":0.2,
+                        "speed":5000,
+                        "disadvantage":0.6,
+                    }
+                },
+                "ais":{
+                    "untrained":{
+                        skill:1,
+                        speed:1000,
+                    },
+                    "baby":{
+                        skill:1.25,
+                        speed:1000,
+                    },
+                    "mid":{
+                        skill:1.6,
+                        speed:1000,
+                    },
+                    "adult":{
+                        skill:1.8,
+                        speed:1000,
+                    },
+                    "genius":{
+                        skill:2,
+                        speed:1000,
+                    },
+
+                    "tactotic-c":{
+                        skill:null,
+                        speed:2500,
+                    }
+                }
+            },
+            production:{
+                boards:{
+                    "basic":[
+                        "1 tacs",
+                        "1 tacs",
+                        "1 tics",
+                    ],
+                    "gold-basic":[
+                        "1 tacs",
+                        "1 tacs",
+                        "1 toes",
+                    ],
+                },
+            }
+        }
+
+        var ais = new Array()
+
+        function listAi(ele, id, type) {
+            var newAi = new (function(ele, id){
+
+                    this.ele = ele
+                    this.type = type
+                    this.stats = {
+                        speed:1000,
+                        missRates:{
+                            "basic":0.9,
+                        },
+                        learningRate:encomny["startingStats"]["ais"][id].skill
+                    }
+
+                    this.attachedBoard = undefined
+
+                    this.train = function(boardType, rate) {
+                        this.stats.missRates[boardType] *= (1/(1+(rate/10)))
+                    } 
+
+                    return this
+                })(ele, id)
+            ais.push(newAi)
+
+            ele.aiObject = newAi
+        }
+    </script>
+
+    <div class="header">
+        
+        <div class="headerContent">
+            <h1>Idle Noughts</h1>
+            <h2>B.reef</h2>
+            <p>My supercool header</p>
+        </div>
+        
+        
+        <div id="currencyDiv" class="headerContent">
+            <p>Tics: 0</p>
+            <p>Tacs: 0</p>
+            <p>Toes: 0</p>
+        </div>
+    </div>
+    <script>
+        function registerGame(production, num) {
+            console.log(production, num)
+            var gain = production[num+1],
+                num = parseInt(gain.split(" ")[0]),
+                type = gain.split(" ")[1]
+
+            currency[type] += num
+        }
+
+        function updateGameCurrencyDisplay() {
+            var div = document.getElementById("currencyDiv")
+            div.children[0].textContent = `Tics: ${currency["tics"]}`
+            div.children[1].textContent = `Tacs: ${currency["tacs"]}`
+            div.children[2].textContent = `Toes: ${currency["toes"]}`
+        }
+        
+        var updateGameCurrencyDisplayLoop = setInterval(() => {
+            updateGameCurrencyDisplay()
+        }, (1000/60));
+
+
+        function updateAisDisplay() {
+            
+            for (let i = 0; i < ais.length; i++) {
+                const ai = ais[i];
+                if (ai.type != "board") continue
+                var aiSelects = ai.ele.children[2].children[3]
+                for (let i = 0; i < aiSelects.children.length; i++) {
+                    const child = aiSelects.children[i];
+                    var boardType = child.textContent.split(":")[0]
+                    child.textContent = `${boardType}: ${round(1-ai.stats.missRates[boardType.toLowerCase()], 3)}`
+                } 
+
+                var speedDisplay = ai.ele.children[2]
+
+                speedDisplay.children[0].textContent = `Speed: ${ai.stats.speed}`
+
+
+            }
+        }
+
+        var updateAisDisplayLoop = setInterval(() => {
+            updateAisDisplay()
+        }, (1000/30));
+        
+
+    </script>
+
+    <script>
+        function createElementFromHTML(htmlString) {
+            var div = document.createElement('div');
+            div.innerHTML = htmlString.trim();
+
+            // Change this to div.childNodes to support multiple top-level nodes.
+            return div.firstChild;
+        }
+
+        function mouseClickGameTile(ev, num) {
+
+            var board = ev.parentElement.parentElement 
+            if (board.turn == "X" && ((ev.textContent[0] == "X" || ev.textContent[0] == "O") ? ev.textContent[0] : "") == "" && board.children[1].children.length < 1) {
+
+                board.makeMove(board.children[0], num, "X", true)
+                board.turn = "O"
+
+                setTimeout(()=>{
+                    board.makeAiMove(board, "O")
+                }, board.stats.speed)
+            }
+
+            
+        }
+        
+        function boardDivToArray(board) {
+            var returnArray = new Array()
+            for (let i = 0; i < board.children.length; i++) {
+                const tile = board.children[i];
+                returnArray.push((tile.textContent[0] == "X" || tile.textContent[0] == "O") ? tile.textContent[0] : "")
+
+            }
+
+            return returnArray
+        }
+       
+        function testBoard(production, board) {
+            var gameTiles = boardDivToArray(board.children[0]),
+                winner = undefined;
+                
+                (["X", "O"]).forEach(turn => {
+                    var winMoves = [
+                        [0, 1, 2],
+                        [3, 4, 5],
+                        [6, 7, 8],
+                        [0, 3, 6],
+                        [1, 4, 7],
+                        [2, 5, 8],
+                        [0, 4, 8],
+                        [2, 4, 6],
+                    ]
+                    for (let i = 0; i < winMoves.length; i++) {
+                        const win = winMoves[i];
+                        var correctTiles = 0
+                        for (let j = 0; j < win.length; j++) {
+                            const winNum = win[j];
+                            if (gameTiles[winNum] == turn) {
+                                correctTiles += 1
+                            }
+                        }
+                        if (correctTiles >= 3) {
+                            winner = turn
+                            break
+
+                        }
+                    }
+                });
+                
+            if (winner != undefined) {
+                board.turn = " "
+                registerGame(production, (winner=="X")?1:-1)
+                setTimeout(() => {
+                    board.parentElement.reset(board)
+                }, board.stats.speed);
+            }
+
+            return winner
+            
+        }
+       
+        function aiBoardLoop(board, ai) {
+            if (board.turn == "X") {
+                ai.train(board.type, ai.stats.learningRate/1000)
+            } 
+            board.makeAiMove(board, board.turn, (board.turn=="X")?ai.stats.missRates[board.type]:board.stats.missRate)
+                setTimeout(() => {
+                    if (board.children[1].children.length >= 1) {
+                        console.log(board.id, board.turn)
+
+                        aiBoardLoop(board, ai)
+                    }
+                }, (board.turn == "X")?ai.stats.speed:board.stats.speed);
+            
+        }
+
+        function buyBoard(id) {
+            console.log(`type-${id}`)
+            var board = createElementFromHTML(document.getElementById("presetBoard").innerHTML),
+                bin = document.getElementById("boardBin")
+            board.classList.add(`type-${id}`)
+
+            board.__proto__.makeMove = function(board, pos, team)  {
+                var gameBoard = board,
+                    posNum = pos-1,
+                    gameTile = gameBoard.children[posNum]
+                gameTile.textContent = team
+
+                var production = encomny.production.boards[board.parentElement.type]
+
+                console.log(board.parentElement.type)
+
+
+                testBoard(production, gameBoard.parentElement)
+
+
+            }
+            board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
+                var gameBoard = board.children[0]
+
+                var production = encomny.production.boards[board.type]
+
+                
+                var boardArray = boardDivToArray(gameBoard),
+                    compressedBoard = Board.compressBoard(boardArray),
+                    correctMove = lookup3b3[compressedBoard]
+                    
+
+                if (correctMove == null) {
+                    board.turn = " "
+                    registerGame(production, 0)
+                    setTimeout(() => {
+                        board.parentElement.reset(board)
+                    }, board.stats.speed);
+                } else {
+                    var correctNum = (correctMove.y*3)+correctMove.x,
+                        missHit = Math.random()
+                    if (missHit < missRate) {
+                        var emptyTiles = Board.emptySlots(boardArray),
+                            randTile = emptyTiles[randInt(0, emptyTiles.length-1)]
+                        correctNum = randTile
+                        
+                        
+                    }
+
+                    
+
+                    var posNum = correctNum,
+                        gameTile = gameBoard.children[posNum]
+
+                    gameTile.textContent = team
+                    
+                    gameBoard.parentElement.turn = (team=="X")?"O":"X"
+                    testBoard(production, gameBoard.parentElement)
+                    
+                }
+                
+                
+            }
+            board.__proto__.reset = function(board) {
+                console.log(board)
+                var tiles = board.children[0].children
+                for (let i = 0; i < tiles.length; i++) {
+                    const tile = tiles[i];
+                    tile.textContent = ""
+                }
+                board.turn = "X"
+                
+            }
+
+            
+            board.stats = {
+                speed:encomny.startingStats.boards[id].speed,
+                missRate:encomny.startingStats.boards[id].speed,
+            }
+            board.type = id
+            console.log(encomny.startingStats.boards, id)
+            board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
+        
+
+            board.turn = "X"
+
+            bin.appendChild(board)
+        }
+       
+        function buyAI(id, type) {
+            if (makePurchase(encomny.costs.ais[id])) {
+                var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
+                    bin = document.getElementById("botBinDiv")
+                    
+                    board.classList.add(`typeAi-${id}`)
+
+                    console.log(board.classList)
+
+                    board.getElementsByTagName("i")[0].textContent = `- ${id}`
+                listAi(board, id, type)
+                bin.appendChild(board)
+            }
+        }
+    </script>
+
+    <div style="margin-top: 200px;">
+        <div class="sideBar" >
+            <div class="buySideBar">
+                <div style="background:  rgba(218, 218, 218, 0.836); margin: 3px;">
+                    <button class="collapsible">Board Ais ⬆︎</button>
+
+                    <div class="collapsibleContent">
+                        <div class="buyBlock">
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('untrained', 'board')">BUY MONEY $$$</button>
+
+                            Untrained AI<br>
+
+                            <p id="untrained-AiBuyDisplay">
+                                Learning Rate:[skillNum]<br>
+                                Speed:[speedNum]
+                            </p>
+
+                        </div>
+                        <div class="buyBlock">
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('baby', 'board')">BUY MONEY $$$</button>
+
+                            Baby AI<br>
+
+                            <p id="baby-AiBuyDisplay">
+                                Learning Rate:[skillNum]<br>
+                                Speed:[speedNum]
+                            </p>
+
+                        </div>
+                        <div class="buyBlock">
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('mid', 'board')">BUY MONEY $$$</button>
+
+                            Mid AI<br>
+
+                            <p id="mid-AiBuyDisplay">
+                                Learning Rate:[skillNum]<br>
+                                Speed:[speedNum]
+                            </p>
+
+                        </div>
+                        <div class="buyBlock">
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('adult', 'board')">BUY MONEY $$$</button>
+
+                            Adult AI<br>
+
+                            <p id="adult-AiBuyDisplay">
+                                Learning Rate:[skillNum]<br>
+                                Speed:[speedNum]
+                            </p>
+
+                        </div>
+                        <div class="buyBlock">
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('genius', 'board')">BUY MONEY $$$</button>
+
+                            Genius AI<br>
+
+                            <p id="genius-AiBuyDisplay">
+                                Learning Rate:[skillNum]<br>
+                                Speed:[speedNum]
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <div style="background:  rgba(218, 218, 218, 0.836); margin: 3px;">
+                    <button class="collapsible">Converter Ais ⬆︎</button>
+
+                    <div class="collapsibleContent">
+                        <div class="buyBlock">
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('tactotic-c', 'converter')">BUY MONEY $$$</button>
+
+                            Tac to Tic AI<br>
+
+                            <p id="tactotic-c-AiBuyDisplay">
+                                Speed:[speedNum]
+                            </p>
+
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            <div class="buySideBar">
+                <div >
+                    <div class="buyBlock" style="height: 150px;" id="basic-BoardBuyDisplay">
+                        <button style="float: right; width: 60px; height: 100%;" onclick="buyBoard('basic')">BUY MONEY $$$</button>
+    
+                        <b>Basic Board</b><br>
+                        <img src="imgs/basicBoard.png" alt="ur gay" width="20%">
+                        <p>
+                            Speed: 1000
+                            <br>
+                            Difficulty: 0.25
+                            <br>
+                            Disadvantage: 0
+                        </p>
+    
+                    </div>
+                    <div class="buyBlock" style="height: 150px;" id="gold-basic-BoardBuyDisplay">
+                        <button style="float: right; width: 60px; height: 100%;" onclick="buyBoard('gold-basic')">BUY MONEY $$$</button>
+    
+                        <b>Gold Basic Board</b><br>
+                        <img src="imgs/basicBoard.png" alt="ur gay" width="20%">
+    
+                        <p>
+                            Speed: 5000
+                            <br>
+                            Difficulty: 0.75
+                            <br>
+                            Disadvantage: 0.5
+                        </p>
+    
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+        </div>
+
+
+        <hr>
+
+
+        <script>
+            function allowDrop(ev) {
+                if (ev.target.id == "botBinDiv" || (ev.target.classList[0] == "botBoardSlot" && ev.target.children.length <= 1)) {
+                    ev.preventDefault();
+                }
+            }
+            
+            function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            }
+            
+            function drop(ev) {
+                if (true) {
+                    ev.preventDefault();
+                    var data = ev.dataTransfer.getData("text"),
+                        aiDiv = document.getElementById(data)
+                    ev.target.appendChild(aiDiv);
+                    aiDiv.aiObject.attachedBoard = ev.target.parentElement
+                    var board = ev.target.parentElement
+                    console.log(board)
+                    if (board.classList[0] == "board") {
+                        aiBoardLoop(board, aiDiv.aiObject)
+                    }
+
+                }
+            }
+        </script>
+
+        <div class="pageSection">
+            
+            <div id="preset-boardAi" style="display: none;">
+                <div id="${Math.random()}" class="botDraggableEle" draggable="true" ondragstart="drag(event)">
+                      [Name]<br>
+                      <i>- Type</i>
+                      <p><b>Speed: 1</b><br>  
+                        <b>Skill:</b>  
+                        <select>
+                            <option>Basic: 0</option>
+                        </select>  
+                    </p> 
+                </div>
+
+            </div>
+            <div id="preset-converterAi" style="display: none;">
+                <div id="${Math.random()}" class="botDraggableEle" draggable="false" ondragstart="drag(event)">
+                      [Name]<br>
+                      <i>- Type</i>
+                      <p><b>Speed: 1</b><br>  
+                        
+                    </p> 
+                </div>
+
+            </div>
+            
+            <div id="botBinDiv" ondrop="drop(event)" ondragover="allowDrop(event)">
+                
+                
+            </div>
+        </div>
+
+        <hr>
+    
+        <div class="pageSection">
+            
+            <div id="presetBoard" style="display: none;">
+                <div class="board type-${id}" id="${Math.random()}">
+                    <div class="boardGameArea">                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 1)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 2)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 3)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 4)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 5)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 6)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 7)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 8)">                                            
+                        </div>                    
+                        <div class="boardGameSquare" onclick="mouseClickGameTile(this, 9)">                                            
+                        </div>                
+                    </div>                
+                    <div class="botBoardSlot" ondrop="drop(event)" ondragover="allowDrop(event)">                
+                    </div>
+                    <div class="boardUpgradeArea">
+                        <b>Speed: 1</b>
+                        <button>Upgrade Speed 5%+</button>    <hr>
+
+                        <b>Enemy Skill: 1</b>
+                        <button>Downgrade Skill 5%-</button>    <br>
+                    </div>
+            </div>
+            </div>
+
+            <div id="boardBin">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        
+        <h1>progress/next goal</h1>
+        <h2>stats</h2>
+    </div>
+    
+
+        <script>
+            buyBoard("basic")
+
+            window.onload = ()=>{
+
+                function setAIBuy(id) {
+                    if (id[id.length-2] == "-") document.getElementById(`${id}-AiBuyDisplay`).textContent = document.getElementById(`${id}-AiBuyDisplay`).textContent.replace("[skillNum]", encomny.startingStats["ais"][id].skill).replace("[speedNum]", encomny.startingStats["ais"][id].speed)
+                    document.getElementById(`${id}-AiBuyDisplay`).parentElement.children[0].textContent = `${encomny.costs["ais"][id]}`
+                    document.getElementById(`${id}-AiBuyDisplay`).innerHTML = `Learning Rate: ${encomny.startingStats.ais[id].skill}<br>Speed: ${encomny.startingStats.ais[id].speed}`
+
+                    
+                };
+
+                (["untrained", "baby", "mid", "adult", "genius", "tactotic-c"]).forEach((age)=>{
+                    setAIBuy(age)
+                })
+
+                function setBoardBuy(id) {
+                    document.getElementById(`${id}-BoardBuyDisplay`).children[0].textContent = encomny.costs.boards[id]
+                    document.getElementById(`${id}-BoardBuyDisplay`).children[4].innerHTML = `Speed: ${round(encomny.startingStats.boards[id].speed, 3)}<br>Difficulty: ${round(1-encomny.startingStats.boards[id].skill, 3)}<br>Disadvantage: ${round(encomny.startingStats.boards[id].disadvantage, 3)}`
+                    /*
+                    document.getElementById(`${id}-BoardBuyDisplay`).children = document.getElementById(`${id}-BoardBuyDisplay`).textContent.replace("[skillNum]", encomny.startingStats["ais"][id].skill).replace("[speedNum]", encomny.startingStats["ais"][id].speed)
+                    
+                    document.getElementById(`${id}-BoardBuyDisplay`).parentElement.children[0].textContent = `${encomny.costs["ais"][id]}`
+                    
+                    
+                    */
+
+                    
+                };
+
+                (["basic", "gold-basic"]).forEach((age)=>{
+                    setBoardBuy(age)
+                })
+                
+                
+
+                
+            }
+        </script>
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    this.textContent = this.textContent.replace("⬇︎", "⬆︎")
+
+                content.style.display = "none";
+                } else {
+                    this.textContent = this.textContent.replace("⬆︎", "⬇︎")
+
+                content.style.display = "block";
+                }
+            });
+        }
+        </script>
+</body>
+</html>

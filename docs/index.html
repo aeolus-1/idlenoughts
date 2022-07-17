@@ -377,7 +377,7 @@ upsetMove(move) {
                     board.parentElement.reset(board)
                 }, board.stats.speed);
             }
-
+            console.log(winner)
             return winner
             
         }
@@ -454,9 +454,10 @@ upsetMove(move) {
                     gameTile.textContent = team
                     
                     gameBoard.parentElement.turn = (team=="X")?"O":"X"
-                    testBoard(production, gameBoard.parentElement)
                     
                 }
+                testBoard(production, gameBoard.parentElement)
+
                 
                 
             }

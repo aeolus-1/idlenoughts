@@ -316,12 +316,14 @@ upsetMove(move) {
             var board = ev.parentElement.parentElement 
             if (board.turn == "X" && ((ev.textContent[0] == "X" || ev.textContent[0] == "O") ? ev.textContent[0] : "") == "" && board.children[1].children.length < 1) {
 
-                board.makeMove(board.children[0], num, "X", true)
+                var sucsess = board.makeMove(board.children[0], num, "X", true)
                 board.turn = "O"
+                if (!sucsess) {
 
-                setTimeout(()=>{
-                    board.makeAiMove(board, "O")
-                }, board.stats.speed)
+                    setTimeout(()=>{
+                        board.makeAiMove(board, "O")
+                    }, board.stats.speed)
+                }
             }
 
             
@@ -369,7 +371,7 @@ upsetMove(move) {
                         }
                     }
                 });
-                
+            console.log(Board.emptySlots(gameTiles))
             if (winner != undefined) {
                 board.turn = " "
                 registerGame(production, (winner=="X")?1:-1)
@@ -377,8 +379,8 @@ upsetMove(move) {
                     board.parentElement.reset(board)
                 }, board.stats.speed);
             }
-            console.log(winner)
-            return winner
+            
+            return winner 
             
         }
        
@@ -388,6 +390,7 @@ upsetMove(move) {
             } 
             board.makeAiMove(board, board.turn, (board.turn=="X")?ai.stats.missRates[board.type]:board.stats.missRate)
                 setTimeout(() => {
+                    console.log(board)
                     if (board.children[1].children.length >= 1) {
                         console.log(board.id, board.turn)
 
@@ -411,10 +414,9 @@ upsetMove(move) {
 
                 var production = encomny.production.boards[board.parentElement.type]
 
-                console.log(board.parentElement.type)
 
 
-                testBoard(production, gameBoard.parentElement)
+                return testBoard(production, gameBoard.parentElement)
 
 
             }
@@ -428,7 +430,6 @@ upsetMove(move) {
                     compressedBoard = Board.compressBoard(boardArray),
                     correctMove = lookup3b3[compressedBoard]
                     
-
                 if (correctMove == null) {
                     board.turn = " "
                     registerGame(production, 0)
@@ -456,9 +457,8 @@ upsetMove(move) {
                     gameBoard.parentElement.turn = (team=="X")?"O":"X"
                     
                 }
-                testBoard(production, gameBoard.parentElement)
 
-                
+                testBoard(production, gameBoard.parentElement)
                 
             }
             board.__proto__.reset = function(board) {
@@ -491,6 +491,8 @@ upsetMove(move) {
             if (makePurchase(encomny.costs.ais[id])) {
                 var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
                     bin = document.getElementById("botBinDiv")
+
+                    board.id = `${Math.random()}`
                     
                     board.classList.add(`typeAi-${id}`)
 
@@ -645,6 +647,7 @@ upsetMove(move) {
                     var data = ev.dataTransfer.getData("text"),
                         aiDiv = document.getElementById(data)
                     ev.target.appendChild(aiDiv);
+                    
                     aiDiv.aiObject.attachedBoard = ev.target.parentElement
                     var board = ev.target.parentElement
                     console.log(board)
@@ -672,7 +675,7 @@ upsetMove(move) {
 
             </div>
             <div id="preset-converterAi" style="display: none;">
-                <div id="${Math.random()}" class="botDraggableEle" draggable="false" ondragstart="drag(event)">
+                <div id="${Math.random()}" class="botDraggableEle" draggable="true" ondragstart="drag(event)">
                       [Name]<br>
                       <i>- Type</i>
                       <p><b>Speed: 1</b><br>  

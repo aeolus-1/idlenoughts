@@ -121,7 +121,7 @@ upsetMove(move) {
     </script>
     <script>
         var currency = {
-            "tics":60,
+            "tics":Infinity,
             "tacs":0,
             "toes":0
         }
@@ -134,13 +134,17 @@ upsetMove(move) {
                 currency[curr] -= num
                 return true
             }
+
+
+                
+
             return false
         }
 
         var encomny = {
             costs:{
                 "boards":{
-                    "basic": "50 tics",
+                    "basic": "17.8 tics",
                     "gold-basic": "1000 tics",
                 },
                 "ais":{
@@ -301,7 +305,6 @@ upsetMove(move) {
     </div>
     <script>
         function registerGame(production, num) {
-            console.log(production, num)
             var gain = production[num+1],
                 num = parseInt(gain.split(" ")[0]),
                 type = gain.split(" ")[1]
@@ -418,7 +421,6 @@ upsetMove(move) {
                         }
                     }
                 });
-            console.log(Board.emptySlots(gameTiles))
             if (winner != undefined) {
                 board.turn = " "
                 registerGame(production, (winner=="X")?1:-1)
@@ -437,9 +439,7 @@ upsetMove(move) {
             } 
             board.makeAiMove(board, board.turn, (board.turn=="X")?ai.stats.missRates[board.type]*ai.stats.globalSkill:board.stats.missRate)
                 setTimeout(() => {
-                    console.log(board)
                     if (board.children[1].children.length >= 1) {
-                        console.log(board.id, board.turn)
 
                         aiBoardLoop(board, ai)
                     }
@@ -449,6 +449,7 @@ upsetMove(move) {
 
         function buyBoard(id) {
             if (makePurchase(encomny.costs.boards[id])) {
+                encomny.costs.boards[id] = multiplyCost(encomny.costs.boards[id], 1.4)
                 var board = createElementFromHTML(document.getElementById("presetBoard").innerHTML),
                     bin = document.getElementById("boardBin")
                 board.classList.add(`type-${id}`)
@@ -511,7 +512,6 @@ upsetMove(move) {
                     
                 }
                 board.__proto__.reset = function(board) {
-                    console.log(board)
                     var tiles = board.children[0].children
                     for (let i = 0; i < tiles.length; i++) {
                         const tile = tiles[i];
@@ -548,7 +548,6 @@ upsetMove(move) {
                         board.children[2].children[4].innerHTML = `Downgrade Skill -2.5%<br>${board.costs.skill}`
                     }
                 })
-                //console.log(board.children[2].children[1].onclick)
                 board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
             
 
@@ -560,6 +559,7 @@ upsetMove(move) {
        
         function buyAI(id, type) {
             if (makePurchase(encomny.costs.ais[id])) {
+                encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.4)
                 var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
                     bin = document.getElementById("botBinDiv")
 
@@ -567,7 +567,6 @@ upsetMove(move) {
                     
                     board.classList.add(`typeAi-${id}`)
 
-                    console.log(board.classList)
 
                     board.getElementsByTagName("i")[0].textContent = `- ${id}`
                 listAi(board, id, type)
@@ -771,7 +770,6 @@ upsetMove(move) {
                     
                     aiDiv.aiObject.attachedBoard = ev.target.parentElement
                     var board = ev.target.parentElement
-                    console.log(board)
                     if (board.classList[0] == "board") {
                         aiBoardLoop(board, aiDiv.aiObject)
                     }
@@ -882,9 +880,7 @@ upsetMove(move) {
                     
                 };
 
-                (["jai", "baby", "mid", "adult", "genius", "tactotic-c"]).forEach((age)=>{
-                    setAIBuy(age)
-                })
+                
 
                 function setBoardBuy(id) {
                     document.getElementById(`${id}-BoardBuyDisplay`).children[0].textContent = encomny.costs.boards[id]
@@ -900,9 +896,15 @@ upsetMove(move) {
                     
                 };
 
-                (["basic", "gold-basic"]).forEach((age)=>{
+                setInterval(() => {
+                    (["basic", "gold-basic"]).forEach((age)=>{
                     setBoardBuy(age)
+                });
+                (["jai", "baby", "mid", "adult", "genius", "tactotic-c"]).forEach((age)=>{
+                    setAIBuy(age)
                 })
+                }, 50);
+                
                 
                 
 

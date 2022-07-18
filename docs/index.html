@@ -13,6 +13,8 @@
     
 </head>
 <body>
+    <script>        alert("WIP")
+    </script>
     <script src="lookUp3b3.js"></script>
 
     <script>
@@ -119,7 +121,7 @@ upsetMove(move) {
     </script>
     <script>
         var currency = {
-            "tics":60,
+            "tics":Infinity,
             "tacs":0,
             "toes":0
         }
@@ -142,7 +144,7 @@ upsetMove(move) {
                     "gold-basic": "1000 tics",
                 },
                 "ais":{
-                    "untrained": "15 tics",
+                    "jai": "15 tics",
                     "baby": "20 tics",
                     "mid": "30 tics",
                     "adult": "90 tics",
@@ -166,7 +168,7 @@ upsetMove(move) {
                     }
                 },
                 "ais":{
-                    "untrained":{
+                    "jai":{
                         skill:1,
                         speed:1000,
                     },
@@ -208,7 +210,12 @@ upsetMove(move) {
                 },
             }
         }
+        function multiplyCost(cost, float) {
+            var num = cost.split(" ")[0],
+                curr = cost.split(" ")[1]
 
+            return `${Math.round(num*float)} ${curr}`
+        }
         var ais = new Array()
 
         function listAi(ele, id, type) {
@@ -221,14 +228,25 @@ upsetMove(move) {
                         missRates:{
                             "basic":0.9,
                         },
+                        globalSkill:1,
                         learningRate:encomny["startingStats"]["ais"][id].skill
+                    }
+
+                    this.cooldown = 1
+
+                    this.costs = {
+                        speed:"5 tics",
+                        skill:"50 tics",
                     }
 
                     this.attachedBoard = undefined
 
                     this.train = function(boardType, rate) {
-                        this.stats.missRates[boardType] *= (1/(1+(rate/10)))
+                        this.stats.missRates[boardType] *= 0.99875
                     } 
+                    //ai.costs.speed = multiplyCost(ai.costs.speed, 1.6)
+                    //ai.costs.skill = multiplyCost(ai.costs.skill, 1.8)
+
 
                     return this
                 })(ele, id)
@@ -236,6 +254,26 @@ upsetMove(move) {
 
             ele.aiObject = newAi
         }
+
+        function updateConverterAis() {
+            for (let i = 0; i < ais.length; i++) {
+                const ai = ais[i];
+                if (ai.type == "converter") {
+                    ai.cooldown -= 1/ai.stats.speed
+                    ai.ele.children[3].style.width = `${(1-Math.max(ai.cooldown, 0))*85}px`
+
+                    if (ai.cooldown <= 0) {
+                        if (currency.tacs > 0) {
+                            ai.cooldown = 1
+
+                            currency.tacs -= 1
+                            currency.tics += 1
+                        }
+                    }
+                }
+            }
+        }
+        setInterval(updateConverterAis, 1)
     </script>
 
     <div class="header">
@@ -252,6 +290,14 @@ upsetMove(move) {
             <p>Tacs: 0</p>
             <p>Toes: 0</p>
         </div>
+        <div style="margin-top: -10px;" id="botUpgradeDiv">
+            <div id="botUpgradeSlot" style="width: 130px; height: 130px; float: left; margin-top: -15px;" ondrop="drop(event)" ondragover="allowDrop(event)">
+            </div>
+            <h2>Upgrade</h2>
+            <button id="upgradeDivSpeedUp">Upgrade Speed<br></button>
+            <button id="upgradeDivSkillUp">Upgrade Skill</button>
+        </div>
+            
     </div>
     <script>
         function registerGame(production, num) {
@@ -284,12 +330,12 @@ upsetMove(move) {
                 for (let i = 0; i < aiSelects.children.length; i++) {
                     const child = aiSelects.children[i];
                     var boardType = child.textContent.split(":")[0]
-                    child.textContent = `${boardType}: ${round(1-ai.stats.missRates[boardType.toLowerCase()], 3)}`
+                    child.textContent = `${boardType}: ${round((1-ai.stats.missRates[boardType.toLowerCase()])*ai.stats.globalSkill, 3)}`
                 } 
 
                 var speedDisplay = ai.ele.children[2]
 
-                speedDisplay.children[0].textContent = `Speed: ${ai.stats.speed}`
+                speedDisplay.children[0].textContent = `Speed: ${round(1000/ai.stats.speed, 1)}ps`
 
 
             }
@@ -303,6 +349,7 @@ upsetMove(move) {
     </script>
 
     <script>
+        
         function createElementFromHTML(htmlString) {
             var div = document.createElement('div');
             div.innerHTML = htmlString.trim();
@@ -388,7 +435,7 @@ upsetMove(move) {
             if (board.turn == "X") {
                 ai.train(board.type, ai.stats.learningRate/1000)
             } 
-            board.makeAiMove(board, board.turn, (board.turn=="X")?ai.stats.missRates[board.type]:board.stats.missRate)
+            board.makeAiMove(board, board.turn, (board.turn=="X")?ai.stats.missRates[board.type]*ai.stats.globalSkill:board.stats.missRate)
                 setTimeout(() => {
                     console.log(board)
                     if (board.children[1].children.length >= 1) {
@@ -405,6 +452,8 @@ upsetMove(move) {
                 var board = createElementFromHTML(document.getElementById("presetBoard").innerHTML),
                     bin = document.getElementById("boardBin")
                 board.classList.add(`type-${id}`)
+                var idid = `${Math.random()}`
+                board.id = idid
 
                 board.__proto__.makeMove = function(board, pos, team)  {
                     var gameBoard = board,
@@ -477,8 +526,29 @@ upsetMove(move) {
                     speed:encomny.startingStats.boards[id].speed,
                     missRate:encomny.startingStats.boards[id].speed,
                 }
+                board.costs = {
+                    speed:"5 tics",
+                    skill:"10 tics",
+                }
                 board.type = id
-                console.log(encomny.startingStats.boards, id)
+                board.children[2].children[1].addEventListener("click", ()=>{
+                    var board = document.getElementById(idid)
+                    if (makePurchase(board.costs.speed)) {
+                        board.stats.speed = 1/((1/board.stats.speed)*1.05)
+                        board.costs.speed = multiplyCost(board.costs.speed, 1.6)
+                        board.children[2].children[1].innerHTML = `Upgrade Speed +5%<br>${board.costs.speed}`
+                    }
+                })
+                board.children[2].children[4].addEventListener("click", ()=>{
+                    var board = document.getElementById(idid)
+                    if (makePurchase(board.costs.speed)) {
+                        board.stats.skill = (1-(1-board.stats.skill)*1.05)
+                        board.costs.skill = multiplyCost(board.costs.skill, 1.6)
+
+                        board.children[2].children[4].innerHTML = `Downgrade Skill -2.5%<br>${board.costs.skill}`
+                    }
+                })
+                //console.log(board.children[2].children[1].onclick)
                 board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
             
 
@@ -514,11 +584,11 @@ upsetMove(move) {
 
                     <div class="collapsibleContent">
                         <div class="buyBlock">
-                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('untrained', 'board')">BUY MONEY $$$</button>
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('jai', 'board')">BUY MONEY $$$</button>
 
-                            Untrained AI<br>
+                            jai AI<br>
 
-                            <p id="untrained-AiBuyDisplay">
+                            <p id="jai-AiBuyDisplay">
                                 Learning Rate:[skillNum]<br>
                                 Speed:[speedNum]
                             </p>
@@ -632,8 +702,56 @@ upsetMove(move) {
 
 
         <script>
+            document.getElementById("upgradeDivSpeedUp").onclick = function(){
+                var div = this.parentElement,
+                    ai = div.children[0].children
+                if (ai.length > 0) {
+                    ai = ai[0].aiObject
+
+                    if (makePurchase(ai.costs.speed)) {
+
+                        ai.stats.speed = Math.round(ai.stats.speed*0.9756097561)
+                        ai.costs.speed = multiplyCost(ai.costs.speed, 1.6)
+
+                        div.children[2].innerHTML = `Upgrade Speed +5%<br>${ai.costs.speed}`
+                        div.children[3].innerHTML = `Upgrade Skill +5%<br>${ai.costs.skill}`
+                    }
+                    
+                }
+
+            }
+            document.getElementById("upgradeDivSkillUp").onclick = function(){
+                var div = this.parentElement,
+                    ai = div.children[0].children
+                if (ai.length > 0) {
+                    ai = ai[0].aiObject
+                    if (makePurchase(ai.costs.skill)) {
+
+                    
+                        ai.stats.globalSkill = Math.round(ai.stats.globalSkill*0.9756097561)
+                        ai.costs.skill = multiplyCost(ai.costs.skill, 1.8)
+
+                        div.children[2].innerHTML = `Upgrade Speed +5%<br>${ai.costs.speed}`
+                        div.children[3].innerHTML = `Upgrade Skill +5%<br>${ai.costs.skill}`
+                    }
+                    
+                }
+            }
+
+            function setUpgradeDiv() {
+                var upgradeDiv = document.getElementById("botUpgradeDiv"),
+                    ai = upgradeDiv.children[0].children[0].aiObject
+
+                upgradeDiv.children[2].innerHTML = `Upgrade Speed +5%<br>${ai.costs.speed}`
+                upgradeDiv.children[3].innerHTML = `Upgrade Skill +5%<br>${ai.costs.skill}`
+
+                
+
+
+            }
+
             function allowDrop(ev) {
-                if (ev.target.id == "botBinDiv" || (ev.target.classList[0] == "botBoardSlot" && ev.target.children.length <= 1)) {
+                if ((ev.target.id == "botBinDiv" || ev.target.id == "botUpgradeSlot") || (ev.target.classList[0] == "botBoardSlot" && ev.target.children.length <= 1)) {
                     ev.preventDefault();
                 }
             }
@@ -643,6 +761,8 @@ upsetMove(move) {
             }
             
             function drop(ev) {
+                document.getElementById("upgradeDivSpeedUp").innerHTML = "Upgrade Speed"
+                document.getElementById("upgradeDivSkillUp").innerHTML = "Upgrade Skill"
                 if (true) {
                     ev.preventDefault();
                     var data = ev.dataTransfer.getData("text"),
@@ -654,6 +774,9 @@ upsetMove(move) {
                     console.log(board)
                     if (board.classList[0] == "board") {
                         aiBoardLoop(board, aiDiv.aiObject)
+                    }
+                    if (board.id == "botUpgradeDiv") {
+                        setUpgradeDiv(board)
                     }
 
                 }
@@ -680,16 +803,19 @@ upsetMove(move) {
                       [Name]<br>
                       <i>- Type</i>
                       <p><b>Speed: 1</b><br>  
-                        
+                        <div class="converterProgressBar"></div>
                     </p> 
                 </div>
 
             </div>
+
+            
             
             <div id="botBinDiv" ondrop="drop(event)" ondragover="allowDrop(event)">
                 
                 
             </div>
+            
         </div>
 
         <hr>
@@ -722,10 +848,10 @@ upsetMove(move) {
                     </div>
                     <div class="boardUpgradeArea">
                         <b>Speed: 1</b>
-                        <button>Upgrade Speed 5%+</button>    <hr>
+                        <button>Upgrade Speed +5%<br>5 tics</button>    <hr>
 
                         <b>Enemy Skill: 1</b>
-                        <button>Downgrade Skill 5%-</button>    <br>
+                        <button>Downgrade Skill -5%<br>10 tics</button>    <br>
                     </div>
             </div>
             </div>
@@ -756,7 +882,7 @@ upsetMove(move) {
                     
                 };
 
-                (["untrained", "baby", "mid", "adult", "genius", "tactotic-c"]).forEach((age)=>{
+                (["jai", "baby", "mid", "adult", "genius", "tactotic-c"]).forEach((age)=>{
                     setAIBuy(age)
                 })
 

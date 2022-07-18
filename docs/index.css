@@ -74,6 +74,11 @@ i {
     
 
 }
+.converterProgressBar {
+    width: 85px;
+    height: 20px;
+    background: black;
+}
 
 .board {
     width: fit-content;
@@ -174,7 +179,7 @@ i {
 }
 
 
-#botBinDiv {
+#botBinDiv, #botUpgradeSlot {
     margin: 10px;
 
     width: 100%;
@@ -184,6 +189,7 @@ i {
     float: left;
     
 }
+
 
 .headerContent {
     float: left;

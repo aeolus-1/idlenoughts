@@ -401,90 +401,91 @@ upsetMove(move) {
         }
 
         function buyBoard(id) {
-            console.log(`type-${id}`)
-            var board = createElementFromHTML(document.getElementById("presetBoard").innerHTML),
-                bin = document.getElementById("boardBin")
-            board.classList.add(`type-${id}`)
+            if (makePurchase(encomny.costs.boards[id])) {
+                var board = createElementFromHTML(document.getElementById("presetBoard").innerHTML),
+                    bin = document.getElementById("boardBin")
+                board.classList.add(`type-${id}`)
 
-            board.__proto__.makeMove = function(board, pos, team)  {
-                var gameBoard = board,
-                    posNum = pos-1,
-                    gameTile = gameBoard.children[posNum]
-                gameTile.textContent = team
+                board.__proto__.makeMove = function(board, pos, team)  {
+                    var gameBoard = board,
+                        posNum = pos-1,
+                        gameTile = gameBoard.children[posNum]
+                    gameTile.textContent = team
 
-                var production = encomny.production.boards[board.parentElement.type]
-
-
-
-                return testBoard(production, gameBoard.parentElement)
+                    var production = encomny.production.boards[board.parentElement.type]
 
 
-            }
-            board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
-                var gameBoard = board.children[0]
 
-                var production = encomny.production.boards[board.type]
+                    return testBoard(production, gameBoard.parentElement)
 
-                
-                var boardArray = boardDivToArray(gameBoard),
-                    compressedBoard = Board.compressBoard(boardArray),
-                    correctMove = lookup3b3[compressedBoard]
+
+                }
+                board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
+                    var gameBoard = board.children[0]
+
+                    var production = encomny.production.boards[board.type]
+
                     
-                if (correctMove == null) {
-                    board.turn = " "
-                    registerGame(production, 0)
-                    setTimeout(() => {
-                        board.parentElement.reset(board)
-                    }, board.stats.speed);
-                } else {
-                    var correctNum = (correctMove.y*3)+correctMove.x,
-                        missHit = Math.random()
-                    if (missHit < missRate) {
-                        var emptyTiles = Board.emptySlots(boardArray),
-                            randTile = emptyTiles[randInt(0, emptyTiles.length-1)]
-                        correctNum = randTile
+                    var boardArray = boardDivToArray(gameBoard),
+                        compressedBoard = Board.compressBoard(boardArray),
+                        correctMove = lookup3b3[compressedBoard]
                         
+                    if (correctMove == null) {
+                        board.turn = " "
+                        registerGame(production, 0)
+                        setTimeout(() => {
+                            board.parentElement.reset(board)
+                        }, board.stats.speed);
+                    } else {
+                        var correctNum = (correctMove.y*3)+correctMove.x,
+                            missHit = Math.random()
+                        if (missHit < missRate) {
+                            var emptyTiles = Board.emptySlots(boardArray),
+                                randTile = emptyTiles[randInt(0, emptyTiles.length-1)]
+                            correctNum = randTile
+                            
+                            
+                        }
+
+                        
+
+                        var posNum = correctNum,
+                            gameTile = gameBoard.children[posNum]
+
+                        gameTile.textContent = team
+                        
+                        gameBoard.parentElement.turn = (team=="X")?"O":"X"
                         
                     }
 
+                    testBoard(production, gameBoard.parentElement)
                     
-
-                    var posNum = correctNum,
-                        gameTile = gameBoard.children[posNum]
-
-                    gameTile.textContent = team
-                    
-                    gameBoard.parentElement.turn = (team=="X")?"O":"X"
+                }
+                board.__proto__.reset = function(board) {
+                    console.log(board)
+                    var tiles = board.children[0].children
+                    for (let i = 0; i < tiles.length; i++) {
+                        const tile = tiles[i];
+                        tile.textContent = ""
+                    }
+                    board.turn = "X"
                     
                 }
 
-                testBoard(production, gameBoard.parentElement)
                 
-            }
-            board.__proto__.reset = function(board) {
-                console.log(board)
-                var tiles = board.children[0].children
-                for (let i = 0; i < tiles.length; i++) {
-                    const tile = tiles[i];
-                    tile.textContent = ""
+                board.stats = {
+                    speed:encomny.startingStats.boards[id].speed,
+                    missRate:encomny.startingStats.boards[id].speed,
                 }
-                board.turn = "X"
-                
-            }
-
+                board.type = id
+                console.log(encomny.startingStats.boards, id)
+                board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
             
-            board.stats = {
-                speed:encomny.startingStats.boards[id].speed,
-                missRate:encomny.startingStats.boards[id].speed,
+
+                board.turn = "X"
+
+                bin.appendChild(board)
             }
-            board.type = id
-            console.log(encomny.startingStats.boards, id)
-            board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
-        
-
-            board.turn = "X"
-
-            bin.appendChild(board)
         }
        
         function buyAI(id, type) {

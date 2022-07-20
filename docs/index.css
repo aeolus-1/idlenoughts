@@ -4,10 +4,15 @@ img {
 html {
     overflow: hidden;
     height: 100%;
+    zoom: 90%;
+
 }
 body {
     height: 100%;
     overflow: auto;
+    margin: 0%;
+    padding: 0%;
+    line-height: 13px;
 }
 p {
     margin-top: 5px;
@@ -15,6 +20,11 @@ p {
 i {
     font-size: 10px;
 }
+.footer p, h3 {
+    line-height: 0%;
+}
+
+
 
 .header {
     position: fixed;
@@ -30,7 +40,26 @@ i {
 
     overflow: auto;
 }
+.overlayScreen {
+    background: rgb(224, 224, 224);
+    z-index: 5;
+    position: fixed;
+    width: 80%;
+    height: 90%;
+    margin-left: 10%;
+    margin-top: 2.5%;
 
+    border-radius: 3px;
+    box-shadow: 5px 10px 40px ;
+
+}
+#toeShopClose {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 70px;
+    height: 70px;
+}
 .footer {
     width: 100%;
     min-height: 100px;
@@ -104,18 +133,7 @@ i {
 
 }
 
-.boardGameArea {
-    width:300px;
-    height:300px;
-    background: rgb(57, 124, 91);
-    background-clip: content-box;
-    
-    box-shadow: 2.5px 5px 10px ;
 
-
-    margin: 20px;
-
-}
 .botBoardSlot {
     width: 130px;
     height:130px;
@@ -124,7 +142,10 @@ i {
     box-sizing: border-box;
     border: 5px solid black;
 }
-.boardGameSquare {
+
+
+/*==========================basic==========================±*/
+.type-basic .boardGameSquare {
     width:96px;
     height:96px;
 
@@ -138,6 +159,74 @@ i {
 
     margin: 2px;
 }
+.type-basic .boardGameArea {
+    width:300px;
+    height:300px;
+    background: rgb(57, 124, 91);
+    background-clip: content-box;
+    
+    box-shadow: 2.5px 5px 10px ;
+
+
+    margin: 20px;
+
+}
+/*==========================gold-basic==========================±*/
+.type-gold-basic .boardGameSquare {
+    width:96px;
+    height:96px;
+
+    line-height : 96px;
+
+    float: left;
+
+    background: lightgrey;
+    text-align: center;
+    font-size: 70px;
+
+    margin: 2px;
+}
+.type-gold-basic .boardGameArea {
+    width:300px;
+    height:300px;
+    background: rgb(57, 124, 91);
+    background-clip: content-box;
+    
+    box-shadow: 2.5px 5px 10px ;
+
+
+    margin: 20px;
+
+}
+
+/*==========================±1d==========================±*/
+.type-1d .boardGameSquare {
+    width:29.25px;
+    height:29.25px;
+
+
+    float: left;
+
+    background: lightgrey;
+    text-align: center;
+    font-size: 25px;
+    line-height: normal;
+
+    margin: 2px;
+}
+.type-1d .boardGameArea {
+    width:300px;
+    height:31px;
+    background: rgb(57, 124, 91);
+    background-clip: content-box;
+    
+    box-shadow: 2.5px 5px 10px ;
+
+
+    margin: 20px;
+
+}
+
 .buySideBar {
     overflow-y: scroll;
     width: 100%;
@@ -179,7 +268,7 @@ i {
 }
 
 
-#botBinDiv, #botUpgradeSlot {
+#botBinDiv, #botUpgradeSlot, #botRecycleSlot {
     margin: 10px;
 
     width: 100%;

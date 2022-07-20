@@ -8,7 +8,7 @@ quick link - https://aeolus-1.github.io/idlenoughts/
 
 
 ## change log
->v0.1
+<b>v0.1</b>
 - Current Boards: Basic, Gold, 1d
 - Toe Shop WIP
 - Full(ish) ai and board management

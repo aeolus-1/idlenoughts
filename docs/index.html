@@ -159,7 +159,7 @@ upsetMove(move) {
                     "baby": "20 tics",
                     "mid": "30 tics",
                     "adult": "90 tics",
-                    "genius": "200 tics",
+                    "genius": "350 tics",
 
                     "tactotic-c": "100 tics",
                     "tac&tictotoe-c":"2500 tics",
@@ -190,19 +190,19 @@ upsetMove(move) {
                         speed:1000,
                     },
                     "baby":{
-                        skill:1.25,
+                        skill:1.5,
                         speed:1000,
                     },
                     "mid":{
-                        skill:1.6,
+                        skill:3.5,
                         speed:1000,
                     },
                     "adult":{
-                        skill:1.8,
+                        skill:4,
                         speed:1000,
                     },
                     "genius":{
-                        skill:2,
+                        skill:7.5,
                         speed:1000,
                     },
 
@@ -388,7 +388,12 @@ upsetMove(move) {
         <button id="toeShopClose">
             Close
         </button>
-        wip
+        <div class="toeShopDiv">
+            <button class="toeShopButt">Gain</button>
+            <button class="toeShopButt">Speed</button>
+            <button class="toeShopButt">Skill</button>
+
+        </div>
     </div>
     <script>
         document.getElementById("toeShop").style.display = "none"
@@ -1014,7 +1019,7 @@ upsetMove(move) {
                     
                 }
                 value += Math.floor((1000/ai.stats.speed)*50)
-                return Math.round(value*0.5)
+                return Math.round(value*0.25)
             }
 
             function setRecycleDiv() {
@@ -1039,15 +1044,26 @@ upsetMove(move) {
                 var div = this.parentElement,
                     ai = div.children[0].children
                 if (ai.length > 0) {
-                    makePurchase(`-${getValue(ai[0].aiObject)} tacs`)
-                    ai[0].remove()
+                    ai = ai[0]
+                    for (let i = 0; i < ais.length; i++) {
+                        const ai2 = ais[i];
+                        console.log(ai2.ele.id, ai.id)
+                        if (ai2.ele.id == ai.id) {
+                            ais.splice(i, 1)
+                            break
+                        }
+                    }
+                    makePurchase(`-${getValue(ai.aiObject)} tacs`)
+                    ai.remove()
                     
                 }
             }
 
             function allowDrop(ev) {
-                if ((ev.target.id == "botBinDiv" || ev.target.id == "botUpgradeSlot" || ev.target.id == "botRecycleSlot") || (ev.target.classList[0] == "botBoardSlot" && ev.target.children.length <= 1)) {
-                    ev.preventDefault();
+                if (((ev.target.id == "botBinDiv")?true:ev.target.children.length <= 0)) {
+                    if (true){
+                        ev.preventDefault();
+                    }
                 }
             }
             
@@ -1062,20 +1078,22 @@ upsetMove(move) {
                     ev.preventDefault();
                     var data = ev.dataTransfer.getData("text"),
                         aiDiv = document.getElementById(data)
-                    ev.target.appendChild(aiDiv);
-                    
-                    aiDiv.aiObject.attachedBoard = ev.target.parentElement
-                    aiDiv.aiObject.droppedElement = ev.target
-                    var board = ev.target.parentElement
-                    if (board.classList[0] == "board") {
-                        aiBoardLoop(board, aiDiv.aiObject)
+                    if (((ev.target.id == "botBinDiv")?true:ev.target.children.length <= 1)) {
+                        ev.target.appendChild(aiDiv);
+                        
+                        aiDiv.aiObject.attachedBoard = ev.target.parentElement
+                        aiDiv.aiObject.droppedElement = ev.target
+                        var board = ev.target.parentElement
+                        if (board.classList[0] == "board") {
+                            aiBoardLoop(board, aiDiv.aiObject)
+                        }
+                        if (board.id == "botUpgradeDiv") {
+                        }
+                        setTimeout(() => {
+                            setUpgradeDiv()
+                            setRecycleDiv()
+                        }, 20); 
                     }
-                    if (board.id == "botUpgradeDiv") {
-                    }
-                    setTimeout(() => {
-                        setUpgradeDiv()
-                        setRecycleDiv()
-                    }, 20); 
 
                     
 
@@ -1315,7 +1333,7 @@ upsetMove(move) {
             }
 
             setInterval(updateProgressBar, 50)
-            var saveVersion = "v6"
+            var saveVersion = "v7"
             function getGameData() {
                 var data = {
                     saveVersion:saveVersion,
@@ -1344,7 +1362,7 @@ upsetMove(move) {
                 for (let i = 0; i < ais.length; i++) {
                     const ai = ais[i];
                     data.ais.push({
-                        id:ai.id,
+                        id:ai.ele.id,
                         type:ai.type,
                         stats:ai.stats,
                         costs:ai.costs,
@@ -1386,17 +1404,16 @@ upsetMove(move) {
                     var board = createElementFromHTML(document.getElementById(`preset-${ai.type}Ai`).innerHTML),
                     bin = document.getElementById(ai.boardId)
 
-
-                    board.id = ai.idid
+                    board.id = ai.id
                     
-                    board.classList.add(`typeAi-${ai.id}`)
+                    board.classList.add(`typeAi-${ai.idid}`)
 
                     
 
 
-                    board.getElementsByTagName("i")[0].textContent = `- ${ai.id}`
+                    board.getElementsByTagName("i")[0].textContent = `- ${ai.idid}`
                     
-                    var newAi = listAi(board, ai.id, ai.type)
+                    var newAi = listAi(board, ai.idid, ai.type)
 
                     newAi.stats = ai.stats
                     newAi.costs = ai.costs
@@ -1405,7 +1422,6 @@ upsetMove(move) {
                     newAi.droppedElement = bin
 
 
-                    console.log(board.attachedBoard, bin)
                     if (bin.parentElement.classList[0] == "board") {
                         aiBoardLoop(bin.parentElement, board.aiObject)
                     }
@@ -1467,7 +1483,12 @@ upsetMove(move) {
                 saveGame()
             }, 1000);
 
-            
+            window.addEventListener('beforeunload', function (e) {
+                saveGame()
+
+                e.preventDefault();
+                e.returnValue = '';
+            });
         </script>
 </body>
 </html>

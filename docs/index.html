@@ -294,6 +294,10 @@ upsetMove(move) {
             ele.aiObject = newAi
             return newAi
         }
+
+        setInterval(() => {
+            updateConverterAis()
+        }, 1);
         
         function updateConverterAis() {
             for (let i = 0; i < ais.length; i++) {
@@ -319,6 +323,7 @@ upsetMove(move) {
                         }
 
                         if (canConvert) {
+                            console.log(production)
                             for (let i = 0; i < production.input.length; i++) {
                                 const int = production.input[i];
                                 var num = parseInt(int.split(" ")[0]),

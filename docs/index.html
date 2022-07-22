@@ -13,10 +13,10 @@
     
 </head>
 <body>
-    <script>        alert("WIP")
-    </script>
+   
     <script src="lookUp3b3.js"></script>
     <script src="lookUp1d.js"></script>
+    <script src="names.js"></script>
 
     <script>
         var Board = {
@@ -129,7 +129,11 @@ upsetMove(move) {
             "tacs":0,
             "toes":0,
             "tempToes":0,
-        }
+        },
+            gameTier = {
+                state:1,
+                cost:"5 toes",
+            }
 
         function makePurchase(cost) {
             var num = parseInt(cost.split(" ")[0]),
@@ -145,7 +149,18 @@ upsetMove(move) {
 
             return false
         }
-
+        var toeEncomny = {
+            costs:{
+                gain:1,
+                speed:1,
+                skill:1,
+            },
+            stats:{
+                gain:1,
+                speed:1,
+                skill:1,
+            }
+        }
         var startEncomny = {
             costs:{
                 "boards":{
@@ -244,7 +259,27 @@ upsetMove(move) {
                         "2 tics",
                     ],
                 },
+            },
+            tierReq:{
+                "boards":{
+                    "basic": 1,
+                    "gold-basic": 1,
+                    "1d":2,
+
+                },
+                "ais":{
+                    "jai": 1,
+                    "baby": 1,
+                    "mid": 1,
+                    "adult": 1,
+                    "genius": 2,
+
+                    "tactotic-c": 1,
+                    "tac&tictotoe-c":2,
+                }
+                
             }
+            
         },
             encomny = JSON.parse(JSON.stringify(startEncomny))
         
@@ -367,7 +402,7 @@ upsetMove(move) {
             <b>
                  + 0 Toes 
                  <button id="presigeButton">New Game Plus</button><br><br>
-                 <button id="toeShopButton" style="width:100%; height: 25px;">Toe Shop</button>
+                 <button id="toeShopButton" style="width:100%; height: 40px;">Toe Shop</button>
             </b>
         </div>
         <div style="margin-top: -10px;" id="botUpgradeDiv">
@@ -389,9 +424,20 @@ upsetMove(move) {
             Close
         </button>
         <div class="toeShopDiv">
-            <button class="toeShopButt">Gain</button>
-            <button class="toeShopButt">Speed</button>
-            <button class="toeShopButt">Skill</button>
+
+            <h3 id="toeShopToeDisplay">12</h3><br>
+
+            <button class="toeShopButt"><b>Gain</b><p>2x</p><p>2x</p><p>Yay</p></button>
+            <button class="toeShopButt"><b>Speed</b><p>2x</p><p>50%+</p><p>Yay</p></button>
+            <button class="toeShopButt"><b>Skill</b><p>2x</p><p>15%+</p><p>Yay</p></button>
+
+        </div>
+        <div class="toeShopDiv">
+
+            <h3 id="toeShopTierDisplay">Tier 1</h3><br>
+
+            <button id="upgradeTierButton" style="width: 60%; height: 300px; font-size: 500%; font-family: 'Courier New', Courier, monospace;"> Upgrade Tier</button>
+
 
         </div>
     </div>
@@ -405,6 +451,8 @@ upsetMove(move) {
             console.log(document.getElementById("toeShop").style.display)
             document.getElementById("toeShop").style.display = "none"
         }
+
+        
         
     </script>
     <script>
@@ -414,6 +462,13 @@ upsetMove(move) {
     document.getElementById("presigeButton").onclick = function() {
         if (confirm(`Are sure you want to restart?\nYou will get ${currency.tempToes} toes`)) restartGame();
     }
+
+    document.getElementById("upgradeTierButton").onclick = function(){
+        if (makePurchase(gameTier.cost)) {
+            gameTier.state += 1
+            gameTier.cost = multiplyCost(gameTier.cost, 1.5)
+        }
+        }
 
 
         function restartGame() {
@@ -468,7 +523,7 @@ upsetMove(move) {
                 num = parseInt(gain.split(" ")[0]),
                 type = gain.split(" ")[1]
 
-            currency[type] += num
+            currency[type] += num*toeEncomny.stats.gain
         }
 
         function updateGameCurrencyDisplay() {
@@ -478,7 +533,14 @@ upsetMove(move) {
             div.children[2].textContent = `Toes: ${currency["toes"]}`           
             div.children[3].childNodes[0].textContent = ` + ${currency["tempToes"]} Toes `
 
-            document.getElementsByTagName("title")[0].textContent = `Idle Noughts - ${currency.tics} Tices`
+            document.getElementsByTagName("title")[0].textContent = `Idle Noughts - ${currency.tics} Tics`
+            document.getElementById("toeShopToeDisplay").textContent = `${currency.toes} Toes`
+
+            document.getElementById("toeShopTierDisplay").textContent = `Tier ${gameTier.state}`
+            document.getElementById("upgradeTierButton").innerHTML = `Upgrade Tier<br>${gameTier.cost}`
+
+            document.getElementById("toeShopButton").innerHTML = `Toe Shop<br><b>Tier ${gameTier.state}</b>`
+
 
         }
         
@@ -492,6 +554,8 @@ upsetMove(move) {
             for (let i = 0; i < ais.length; i++) {
                 const ai = ais[i];
                 if (ai.type != "board") continue
+
+
                 var aiSelects = ai.ele.children[2].children[3]
                 for (let i = 0; i < aiSelects.children.length; i++) {
                     const child = aiSelects.children[i];
@@ -499,9 +563,10 @@ upsetMove(move) {
                     child.textContent = `${boardType}: ${round((1-ai.stats.missRates[boardType.toLowerCase()])*ai.stats.globalSkill, 3)}`
                 } 
 
-                var speedDisplay = ai.ele.children[2]
+                var speedDisplay = ai.ele.children[2],
+                    toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
 
-                speedDisplay.children[0].textContent = `Speed: ${round(1000/ai.stats.speed, 1)}ps`
+                speedDisplay.children[0].textContent = `Speed: ${round(1000/(ai.stats.speed*toeSpeedBuff), 1)}ps`
 
 
             }
@@ -515,6 +580,10 @@ upsetMove(move) {
             var boards = document.getElementById("boardBin").children
             for (let i = 0; i < boards.length; i++) {
                 const board = boards[i];
+
+                var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
+
+
                 board.children[2].children[0].textContent = `Speed: ${round(1000/board.stats.speed, 0)}`
                 board.children[2].children[3].textContent = `Skill: ${round(1-board.stats.missRate, 2)}`
 
@@ -524,6 +593,47 @@ upsetMove(move) {
 
         var updateBoardsDisplayLoop = setInterval(() => {
             updateBoardsDisplay()
+        }, (1000/30));
+
+
+        function updateToeDisplay() {
+            var toesSection = document.getElementById("toeShop"),
+                upgrades = toesSection.children[1].children
+            
+            for (let i = 2; i < upgrades.length; i++) {
+                const button = upgrades[i];
+                var upgrade = button.children[0].textContent.toLowerCase()
+
+                button.children[1].textContent = `${round(toeEncomny.stats[upgrade], 1)}`
+
+                button.children[3].textContent = `${round(toeEncomny.costs[upgrade], 1)} Toes`
+                
+            }
+        }
+        (function(){
+            var toesSection = document.getElementById("toeShop"),
+                upgrades = toesSection.children[1].children
+            
+            for (let i = 2; i < upgrades.length; i++) {
+                const button = upgrades[i];
+                
+
+                button.onclick = function(){
+                    var upgrade = this.children[0].textContent.toLowerCase()
+                    if (makePurchase(`${toeEncomny.costs[upgrade]} toes`)) {
+                        toeEncomny.stats[upgrade] *= {
+                            gain:2,
+                            speed:1.5,
+                            skill:1.15,
+                        }[upgrade]
+                        toeEncomny.costs[upgrade] *= 2
+                    }
+                }
+            }
+        })()
+
+        setInterval(() => {
+            updateToeDisplay()
         }, (1000/30));
         
 
@@ -651,12 +761,13 @@ upsetMove(move) {
 
             var aiSkill = 1-((1-(ai.stats.missRates[board.type]*ai.stats.globalSkill))*(1-board.disadvantage))
             board.makeAiMove(board, board.turn, (board.turn=="X")?0:1)
+            var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
             intervals["aiBoardLoop"] = setTimeout(() => {
                     if (board.children[1].children.length >= 1) {
 
                         aiBoardLoop(board, ai)
                     }
-                }, (board.turn == "X")?ai.stats.speed:board.stats.speed);
+                }, ((board.turn == "X")?ai.stats.speed:board.stats.speed)*toeSpeedBuff);
             
         }
 
@@ -675,132 +786,141 @@ upsetMove(move) {
                 slotId:`${Math.random()}`,
                 ...details,
             }
-
-            if (cost || makePurchase(encomny.costs.boards[id])) {
-                encomny.costs.boards[id] = multiplyCost(encomny.costs.boards[id], 1.4)
-                var board = createElementFromHTML(document.getElementById(`presetBoard-${id}`).innerHTML),
-                    bin = document.getElementById("boardBin")
-
-                board.children[1].id = details.slotId
-                
-                board.classList.add(`type-${id}`)
-                var idid = details.id
-                board.id = idid
-
-                board.__proto__.makeMove = function(board, pos, team)  {
-                    var gameBoard = board,
-                        posNum = pos-1,
-                        gameTile = gameBoard.children[posNum]
-                    gameTile.textContent = team
-
-                    var production = encomny.production.boards[board.parentElement.type]
-
-
-
-                    return testBoard(production, gameBoard.parentElement)
-
-
-                }
-                board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
-                    console.log(board.turn, missRate)
-                    var gameBoard = board.children[0]
-
-                    var production = encomny.production.boards[board.type]
+            if (cost || gameTier.state >= encomny.tierReq["boards"][id]) {
+                if (cost || (makePurchase(encomny.costs.boards[id]))) {
+                    encomny.costs.boards[id] = multiplyCost(encomny.costs.boards[id], 1.4)
+                    var board = createElementFromHTML(document.getElementById(`presetBoard-${id}`).innerHTML),
+                        bin = document.getElementById("boardBin")
 
                     
-                    var boardArray = boardDivToArray(gameBoard),
-                        compressedBoard = Board.compressBoard(boardArray),
-                        correctMove = lookup1d[compressedBoard]
+
+                    board.children[1].id = details.slotId
+                    
+                    board.classList.add(`type-${id}`)
+                    var idid = details.id
+                    board.id = idid
+
+                    board.__proto__.makeMove = function(board, pos, team)  {
+                        var gameBoard = board,
+                            posNum = pos-1,
+                            gameTile = gameBoard.children[posNum]
+                        gameTile.textContent = team
+
+                        var production = encomny.production.boards[board.parentElement.type]
+
+
+
+                        return testBoard(production, gameBoard.parentElement)
+
+
+                    }
+                    board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
+                        console.log(board.turn, missRate)
+                        var gameBoard = board.children[0]
+
+                        var production = encomny.production.boards[board.type]
+
                         
-                    if (correctMove == null) {
-                        board.turn = " "
-                        registerGame(production, 0)
-                        intervals["aiMoveTie"] = setTimeout(() => {
-                            board.parentElement.reset(board)
-                        }, board.stats.speed);
-                    } else {
-                        var correctNum = (correctMove.y*3)+correctMove.x,
-                            missHit = Math.random()
-                        if (missRate > missHit) {
-                            var emptyTiles = Board.emptySlots(boardArray),
-                                randTile = emptyTiles[randInt(0, emptyTiles.length-1)]
-                            correctNum = randTile
+                        var boardArray = boardDivToArray(gameBoard),
+                            compressedBoard = Board.compressBoard(boardArray),
+                            correctMove = lookup1d[compressedBoard]
                             
+                        if (correctMove == null) {
+                            board.turn = " "
+                            registerGame(production, 0)
+                            intervals["aiMoveTie"] = setTimeout(() => {
+                                board.parentElement.reset(board)
+                            }, board.stats.speed);
+                        } else {
+                            var correctNum = (correctMove.y*3)+correctMove.x,
+                                missHit = Math.random()
+                            if (missRate > missHit) {
+                                var emptyTiles = Board.emptySlots(boardArray),
+                                    randTile = emptyTiles[randInt(0, emptyTiles.length-1)]
+                                correctNum = randTile
+                                
+                                
+                            }
+
+                            
+
+                            var posNum = correctNum,
+                                gameTile = gameBoard.children[posNum]
+
+                            gameTile.textContent = team
+                            
+                            gameBoard.parentElement.turn = (team=="X")?"O":"X"
                             
                         }
 
+                        testBoard(production, gameBoard.parentElement)
                         
-
-                        var posNum = correctNum,
-                            gameTile = gameBoard.children[posNum]
-
-                        gameTile.textContent = team
-                        
-                        gameBoard.parentElement.turn = (team=="X")?"O":"X"
+                    }
+                    board.__proto__.reset = function(board) {
+                        var tiles = board.children[0].children
+                        for (let i = 0; i < tiles.length; i++) {
+                            const tile = tiles[i];
+                            tile.textContent = ""
+                        }
+                        board.turn = "X"
                         
                     }
 
-                    testBoard(production, gameBoard.parentElement)
                     
-                }
-                board.__proto__.reset = function(board) {
-                    var tiles = board.children[0].children
-                    for (let i = 0; i < tiles.length; i++) {
-                        const tile = tiles[i];
-                        tile.textContent = ""
-                    }
-                    board.turn = "X"
-                    
-                }
+                    board.stats = details.stats
+                    board.costs = details.costs
 
+                    board.type = id
+
+                    board.children[2].children[1].addEventListener("click", ()=>{
+                        var board = document.getElementById(idid)
+                        if (makePurchase(board.costs.speed)) {
+                            board.stats.speed = 1000/((1000/board.stats.speed)*1.05)
+                            board.costs.speed = multiplyCost(board.costs.speed, 1.3)
+                            board.children[2].children[1].innerHTML = `Upgrade Speed +5%<br>${board.costs.speed}`
+                        }
+                    })
+                    board.children[2].children[4].addEventListener("click", ()=>{
+                        var board = document.getElementById(idid)
+                        if (makePurchase(board.costs.skill)) {
+                            board.stats.missRate = (board.stats.missRate)*0.9523809524
+                            board.costs.skill = multiplyCost(board.costs.skill, 1.3)
+
+                            board.children[2].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
+                        }
+                    })
+                    board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
                 
-                board.stats = details.stats
-                board.costs = details.costs
 
-                console.log(id)
-                board.type = id
+                    board.turn = "X"
 
-                board.children[2].children[1].addEventListener("click", ()=>{
-                    var board = document.getElementById(idid)
-                    if (makePurchase(board.costs.speed)) {
-                        board.stats.speed = 1000/((1000/board.stats.speed)*1.05)
-                        board.costs.speed = multiplyCost(board.costs.speed, 1.3)
-                        board.children[2].children[1].innerHTML = `Upgrade Speed +5%<br>${board.costs.speed}`
-                    }
-                })
-                board.children[2].children[4].addEventListener("click", ()=>{
-                    var board = document.getElementById(idid)
-                    if (makePurchase(board.costs.skill)) {
-                        board.stats.missRate = (board.stats.missRate)*0.9523809524
-                        board.costs.skill = multiplyCost(board.costs.skill, 1.3)
-
-                        board.children[2].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
-                    }
-                })
-                board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
-            
-
-                board.turn = "X"
-
-                bin.appendChild(board)
+                    bin.appendChild(board)
+                }
             }
         }
        
-        function buyAI(id, type) {
-            if (makePurchase(encomny.costs.ais[id])) {
-                encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.4)
-                var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
-                    bin = document.getElementById("botBinDiv")
+        function buyAI(id, type, name=names[randInt(0, names.length)]) {
+            console.log(id)
+            if (gameTier.state >= encomny.tierReq["ais"][id]) {
+                if (makePurchase(encomny.costs.ais[id])) {
+                    encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.4)
+                    var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
+                        bin = document.getElementById("botBinDiv")
+
+                    board.childNodes[0].textContent = name
 
                     board.id = `${Math.random()}`
-                    
+                        
                     board.classList.add(`typeAi-${id}`)
 
 
                     board.getElementsByTagName("i")[0].textContent = `- ${id}`
-                listAi(board, id, type)
-                bin.appendChild(board)
+                    var newAi = listAi(board, id, type)
+                    newAi.name = name
+                    bin.appendChild(board)
+                }
             }
+            
         }
     </script>
 
@@ -883,7 +1003,7 @@ upsetMove(move) {
 
                         </div>
                         <div class="buyBlock">
-                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('tactotic-c', 'converter')">BUY MONEY $$$</button>
+                            <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('tac&tictotoe-c', 'converter')">BUY MONEY $$$</button>
 
                             Tic to Toe AI<br>
 
@@ -1275,6 +1395,11 @@ upsetMove(move) {
                 }
 
                 function setAIBuy(id) {
+                    if (gameTier.state < encomny.tierReq["ais"][id]){ 
+                        document.getElementById(`${id}-AiBuyDisplay`).parentElement.classList.add("shaded")
+                    } else {
+                        document.getElementById(`${id}-AiBuyDisplay`).parentElement.classList.remove("shaded")
+                    }
                     if (id[id.length-2] == "-") {
                         var production = encomny.production.ais[id]
                         document.getElementById(`${id}-AiBuyDisplay`).innerHTML = `Speed:${encomny.startingStats.ais[id].speed}<br><br>${getConverterValues(production.input)}<br>⬇︎<br>${getConverterValues(production.output)}`
@@ -1290,6 +1415,11 @@ upsetMove(move) {
                 
 
                 function setBoardBuy(id) {
+                    if (gameTier.state < encomny.tierReq["boards"][id]){ 
+                        document.getElementById(`${id}-BoardBuyDisplay`).classList.add("shaded")
+                    } else {
+                        document.getElementById(`${id}-BoardBuyDisplay`).classList.remove("shaded")
+                    }
                     document.getElementById(`${id}-BoardBuyDisplay`).children[0].textContent = encomny.costs.boards[id]
                     document.getElementById(`${id}-BoardBuyDisplay`).children[4].innerHTML = `Speed: ${round(encomny.startingStats.boards[id].speed, 3)}<br>Difficulty: ${round(1-encomny.startingStats.boards[id].skill, 3)}<br>Disadvantage: ${round(encomny.startingStats.boards[id].disadvantage, 3)}`
                     /*
@@ -1333,12 +1463,15 @@ upsetMove(move) {
             }
 
             setInterval(updateProgressBar, 50)
-            var saveVersion = "v7"
+            var saveVersion = "v11"
             function getGameData() {
                 var data = {
                     saveVersion:saveVersion,
                     currency:JSON.parse(JSON.stringify(currency)),
                     encomny:JSON.parse(JSON.stringify(encomny)),
+                    toeEncomny:JSON.parse(JSON.stringify(toeEncomny)),
+                    gameTier:JSON.parse(JSON.stringify(gameTier)),
+
                     boards:[],
                     ais:[],
 
@@ -1367,6 +1500,8 @@ upsetMove(move) {
                         stats:ai.stats,
                         costs:ai.costs,
 
+                        name:ai.name,
+
                         idid:ai.id,
                         boardId:(ai.attachedBoard!=undefined)?ai.droppedElement.id:"botBinDiv",
                         
@@ -1384,11 +1519,12 @@ upsetMove(move) {
                     "toes":0,
                     "tempToes":0,
                 }
-
                 achievementProgress = saveDat.achievementProgress
 
                 currency = saveDat.currency
+                toeEncomny = saveDat.toeEncomny
                 encomny = saveDat.encomny
+                gameTier = saveDat.gameTier
 
                 document.getElementById("boardBin").children[0].remove()
 
@@ -1409,6 +1545,7 @@ upsetMove(move) {
                     board.classList.add(`typeAi-${ai.idid}`)
 
                     
+                    board.childNodes[0].textContent = ai.name
 
 
                     board.getElementsByTagName("i")[0].textContent = `- ${ai.idid}`
@@ -1417,6 +1554,7 @@ upsetMove(move) {
 
                     newAi.stats = ai.stats
                     newAi.costs = ai.costs
+                    newAi.name = ai.name
 
                     newAi.attachedBoard = bin
                     newAi.droppedElement = bin

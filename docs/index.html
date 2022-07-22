@@ -359,7 +359,6 @@ upsetMove(move) {
                         }
 
                         if (canConvert) {
-                            console.log(production)
                             for (let i = 0; i < production.input.length; i++) {
                                 const int = production.input[i];
                                 var num = parseInt(int.split(" ")[0]),
@@ -445,11 +444,9 @@ upsetMove(move) {
     <script>
         document.getElementById("toeShop").style.display = "none"
         document.getElementById("toeShopButton").onclick = function(){
-            console.log(document.getElementById("toeShop").style.display)
             document.getElementById("toeShop").style.display = ""
         }
         document.getElementById("toeShopClose").onclick = function(){
-            console.log(document.getElementById("toeShop").style.display)
             document.getElementById("toeShop").style.display = "none"
         }
 
@@ -488,7 +485,6 @@ upsetMove(move) {
                 len = boardBin.children.length
             for (let i = 0; i < len; i++) {
                 const ai = boardBin.children[len-i-1];
-                console.log(ai)
                 
                 ai.remove()
             }
@@ -504,7 +500,6 @@ upsetMove(move) {
                 var len = holder.children.length
                 for (let i = 0; i < len; i++) {
                     const ai = holder.children[len-i-1];
-                    console.log(ai)
                     
                     ai.remove()
                 }
@@ -554,7 +549,13 @@ upsetMove(move) {
             
             for (let i = 0; i < ais.length; i++) {
                 const ai = ais[i];
-                if (ai.type != "board") continue
+                if (ai.type != "board") {
+                    var speedDisplay = ai.ele.children[2],
+                    toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
+                    speedDisplay.children[0].textContent = `Speed: ${round(1000/(ai.stats.speed*toeSpeedBuff), 1)}ps`
+
+                    continue
+                }
 
 
                 var aiSelects = ai.ele.children[2].children[3]
@@ -566,7 +567,7 @@ upsetMove(move) {
 
                 var speedDisplay = ai.ele.children[2],
                     toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
-
+                console.log(round(1000/(ai.stats.speed*toeSpeedBuff), 1), speedDisplay.children[0])
                 speedDisplay.children[0].textContent = `Speed: ${round(1000/(ai.stats.speed*toeSpeedBuff), 1)}ps`
 
 
@@ -815,7 +816,6 @@ upsetMove(move) {
 
                     }
                     board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
-                        console.log(board.turn, missRate)
                         var gameBoard = board.children[0]
 
                         var production = encomny.production.boards[board.type]
@@ -901,7 +901,6 @@ upsetMove(move) {
         }
        
         function buyAI(id, type, name=names[randInt(0, names.length)]) {
-            console.log(id)
             if (gameTier.state >= encomny.tierReq["ais"][id]) {
                 if (makePurchase(encomny.costs.ais[id])) {
                     encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.4)
@@ -1168,7 +1167,6 @@ upsetMove(move) {
                     ai = ai[0]
                     for (let i = 0; i < ais.length; i++) {
                         const ai2 = ais[i];
-                        console.log(ai2.ele.id, ai.id)
                         if (ai2.ele.id == ai.id) {
                             ais.splice(i, 1)
                             break

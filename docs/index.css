@@ -5,6 +5,7 @@ html {
     overflow: hidden;
     height: 100%;
     zoom: 90%;
+    font-family: 'Courier New', Courier, monospace;
 
 }
 body {
@@ -20,8 +21,26 @@ p {
 i {
     font-size: 10px;
 }
+.shaded {
+    opacity: 20%;
+}
 .footer p, h3 {
     line-height: 0%;
+}
+.toeShopDiv div {
+    display:inline;
+}
+
+.toeShopDiv {
+    text-align: center;
+    margin: 100px;
+    
+}
+.toeShopButt {
+    width: 130px;
+    height: 120px;
+    margin-right: 30px;
+
 }
 
 
@@ -108,6 +127,8 @@ i {
     height: 20px;
     background: black;
 }
+
+
 
 .board {
     width: fit-content;

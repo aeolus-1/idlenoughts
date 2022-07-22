@@ -789,7 +789,7 @@ upsetMove(move) {
             }
             if (cost || gameTier.state >= encomny.tierReq["boards"][id]) {
                 if (cost || (makePurchase(encomny.costs.boards[id]))) {
-                    encomny.costs.boards[id] = multiplyCost(encomny.costs.boards[id], 1.4)
+                    encomny.costs.boards[id] = multiplyCost(encomny.costs.boards[id], 1.15)
                     var board = createElementFromHTML(document.getElementById(`presetBoard-${id}`).innerHTML),
                         bin = document.getElementById("boardBin")
 
@@ -877,7 +877,7 @@ upsetMove(move) {
                         var board = document.getElementById(idid)
                         if (makePurchase(board.costs.speed)) {
                             board.stats.speed = 1000/((1000/board.stats.speed)*1.05)
-                            board.costs.speed = multiplyCost(board.costs.speed, 1.3)
+                            board.costs.speed = multiplyCost(board.costs.speed, 1.15)
                             board.children[2].children[1].innerHTML = `Upgrade Speed +10%<br>${board.costs.speed}`
                         }
                     })
@@ -885,7 +885,7 @@ upsetMove(move) {
                         var board = document.getElementById(idid)
                         if (makePurchase(board.costs.skill)) {
                             board.stats.missRate = (board.stats.missRate)*0.9090909091
-                            board.costs.skill = multiplyCost(board.costs.skill, 1.3)
+                            board.costs.skill = multiplyCost(board.costs.skill, 1.1)
 
                             board.children[2].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
                         }
@@ -903,7 +903,7 @@ upsetMove(move) {
         function buyAI(id, type, name=names[randInt(0, names.length)]) {
             if (gameTier.state >= encomny.tierReq["ais"][id]) {
                 if (makePurchase(encomny.costs.ais[id])) {
-                    encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.4)
+                    encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.15)
                     var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
                         bin = document.getElementById("botBinDiv")
 
@@ -1084,7 +1084,7 @@ upsetMove(move) {
                     if (makePurchase(ai.costs.speed)) {
 
                         ai.stats.speed = Math.round(ai.stats.speed*0.9090909091)
-                        ai.costs.speed = multiplyCost(ai.costs.speed, 1.6)
+                        ai.costs.speed = multiplyCost(ai.costs.speed, 1.2)
 
                         div.children[2].innerHTML = `Upgrade Speed +10%<br>${ai.costs.speed}`
                         div.children[3].innerHTML = `Upgrade Skill +10%<br>${ai.costs.skill}`
@@ -1102,7 +1102,7 @@ upsetMove(move) {
 
                     
                         ai.stats.globalSkill = (ai.stats.globalSkill)*1.1
-                        ai.costs.skill = multiplyCost(ai.costs.skill, 1.8)
+                        ai.costs.skill = multiplyCost(ai.costs.skill, 1.1)
 
                         div.children[2].innerHTML = `Upgrade Speed +10%<br>${ai.costs.speed}`
                         div.children[3].innerHTML = `Upgrade Skill +10%<br>${ai.costs.skill}`

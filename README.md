@@ -8,6 +8,13 @@ quick link - https://aeolus-1.github.io/idlenoughts/
 
 
 ## change log
+<b>v0.1.3</b>
+- Added Toe Shop
+- Added Tier Requirments
+- Improved Saveing
+- Save conversions should happen
+  no guarentees though
+
 <b>v0.1.2</b>
 - Added Saving
 - Fixed Converter not working

@@ -8,6 +8,11 @@ quick link - [https://idlenoughts.tk/]
 
 
 ## change log
+<b>v0.1.3.1</b>
+- Added Deleting Boards
+- Added restart game progress
+- Balence Changes
+
 <b>v0.1.3</b>
 - Added Toe Shop
 - Added Tier Requirments

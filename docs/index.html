@@ -467,7 +467,7 @@ upsetMove(move) {
     document.getElementById("upgradeTierButton").onclick = function(){
         if (makePurchase(gameTier.cost)) {
             gameTier.state += 1
-            gameTier.cost = multiplyCost(gameTier.cost, 1.5)
+            gameTier.cost = multiplyCost(gameTier.cost, 5)
         }
         }
 
@@ -536,7 +536,7 @@ upsetMove(move) {
             div.children[2].textContent = `Toes: ${sh(currency["toes"])}`           
             div.children[3].childNodes[0].textContent = ` + ${sh(currency["tempToes"])} Toes `
 
-            document.getElementsByTagName("title")[0].textContent = `Idle Noughts - sh(${currency.tics}) Tics`
+            document.getElementsByTagName("title")[0].textContent = `Idle Noughts - ${sh(currency.tics)} Tics`
             document.getElementById("toeShopToeDisplay").textContent = `${sh(currency.toes)} Toes`
 
             document.getElementById("toeShopTierDisplay").textContent = `Tier ${gameTier.state}`

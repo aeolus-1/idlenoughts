@@ -395,6 +395,7 @@ upsetMove(move) {
             <h1>Idle Noughts</h1>
             <h2>B.reef</h2>
             <p><a href="https://github.com/aeolus-1/idlenoughts">->github here<-</a></p>
+            <button id="restartButton">Restart</button>
         </div>
         
         
@@ -459,6 +460,35 @@ upsetMove(move) {
     <script>
 
 
+        document.getElementById("restartButton").onclick = function() {
+            if (confirm("Are sure you want to restart????????????") && confirm("All progress will be lost (ಥ﹏ಥ)")) {
+                restartGame()
+                currency = {
+                    "tics":10,
+                    "tacs":0,
+                    "toes":0,
+                    "tempToes":0,
+                }
+                achievementProgress = 50
+                gameTier = {
+                    state:1,
+                    cost:"5 toes",
+                }
+                toeEncomny = {
+                    costs:{
+                        gain:1,
+                        speed:1,
+                        skill:1,
+                    },
+                    stats:{
+                        gain:1,
+                        speed:1,
+                        skill:1,
+                    }
+                }
+            }
+        }
+
 
     document.getElementById("presigeButton").onclick = function() {
         if (confirm(`Are sure you want to restart?\nYou will get ${currency.tempToes} toes`)) restartGame();
@@ -508,7 +538,6 @@ upsetMove(move) {
                 }
             }
 
-            achievementProgress = 50
             encomny = JSON.parse(JSON.stringify(startEncomny))
 
 

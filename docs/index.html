@@ -17,6 +17,8 @@
    
     <script src="lookUp3b3.js"></script>
     <script src="lookUp1d.js"></script>
+    <script src="break_infinity.min.js"></script>
+    <script src="ad-notations.min.js"></script>
     <script src="names.js"></script>
 
     <script>
@@ -120,6 +122,7 @@ upsetMove(move) {
     return move
 }
 }
+    
     </script>
     <script>
 
@@ -191,27 +194,27 @@ upsetMove(move) {
                     },
                     "gold-basic":{
                         "skill":0.2,
-                        "speed":5000,
+                        "speed":3000,
                         "disadvantage":0.6,
                     },
                     "1d":{
                         "skill":0.2,
-                        "speed":550,
+                        "speed":250,
                         "disadvantage":0,
                     }
                 },
                 "ais":{
                     "jai":{
                         skill:1,
-                        speed:1000,
+                        speed:700,
                     },
                     "baby":{
                         skill:1.5,
-                        speed:1000,
+                        speed:700,
                     },
                     "mid":{
                         skill:3.5,
-                        speed:1000,
+                        speed:700,
                     },
                     "adult":{
                         skill:4,
@@ -219,16 +222,16 @@ upsetMove(move) {
                     },
                     "genius":{
                         skill:7.5,
-                        speed:1000,
+                        speed:700,
                     },
 
                     "tactotic-c":{
                         skill:null,
-                        speed:2000,
+                        speed:1500,
                     },
                     "tac&tictotoe-c":{
                         skill:null,
-                        speed:8500,
+                        speed:5000,
                     },
                 }
             },
@@ -239,7 +242,7 @@ upsetMove(move) {
                         output:["1 tics"]
                     },
                     "tac&tictotoe-c":{
-                        input:["50 tics", "50 tics"],
+                        input:["50 tics"],
                         output:["1 tempToes"]
                     }
                 },
@@ -522,15 +525,19 @@ upsetMove(move) {
             currency[type] += num*toeEncomny.stats.gain
         }
 
+        function sh(value) {
+            return new ADNotations.StandardNotation().format(value, 2, 0)
+        }
+
         function updateGameCurrencyDisplay() {
             var div = document.getElementById("currencyDiv")
-            div.children[0].textContent = `Tics: ${currency["tics"]}`
-            div.children[1].textContent = `Tacs: ${currency["tacs"]}`
-            div.children[2].textContent = `Toes: ${currency["toes"]}`           
-            div.children[3].childNodes[0].textContent = ` + ${currency["tempToes"]} Toes `
+            div.children[0].textContent = `Tics: ${sh(currency["tics"])}`
+            div.children[1].textContent = `Tacs: ${sh(currency["tacs"])}`
+            div.children[2].textContent = `Toes: ${sh(currency["toes"])}`           
+            div.children[3].childNodes[0].textContent = ` + ${sh(currency["tempToes"])} Toes `
 
-            document.getElementsByTagName("title")[0].textContent = `Idle Noughts - ${currency.tics} Tics`
-            document.getElementById("toeShopToeDisplay").textContent = `${currency.toes} Toes`
+            document.getElementsByTagName("title")[0].textContent = `Idle Noughts - sh(${currency.tics}) Tics`
+            document.getElementById("toeShopToeDisplay").textContent = `${sh(currency.toes)} Toes`
 
             document.getElementById("toeShopTierDisplay").textContent = `Tier ${gameTier.state}`
             document.getElementById("upgradeTierButton").innerHTML = `Upgrade Tier<br>${gameTier.cost}`
@@ -586,8 +593,8 @@ upsetMove(move) {
                 var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
 
 
-                board.children[2].children[0].textContent = `Speed: ${round(1000/board.stats.speed, 0)}`
-                board.children[2].children[3].textContent = `Skill: ${round(1-board.stats.missRate, 2)}`
+                board.children[3].children[0].textContent = `Speed: ${round(1000/board.stats.speed, 0)}`
+                board.children[3].children[3].textContent = `Skill: ${round(1-board.stats.missRate, 2)}`
 
 
             }
@@ -628,7 +635,7 @@ upsetMove(move) {
                             speed:1.5,
                             skill:1.15,
                         }[upgrade]
-                        toeEncomny.costs[upgrade] *= 2
+                        toeEncomny.costs[upgrade] *= 4
                     }
                 }
             }
@@ -657,11 +664,11 @@ upsetMove(move) {
             if (
                 board.turn == "X" && 
                 ((ev.textContent[0] == "X" || ev.textContent[0] == "O") ? ev.textContent[0] : "") == "" && 
-                board.children[1].children.length < 1 &&
+                board.children[2].children.length < 1 &&
                 board.type != "gold-basic"
                 ) {
 
-                var sucsess = board.makeMove(board.children[0], num, "X", true)
+                var sucsess = board.makeMove(board.children[1], num, "X", true)
                 board.turn = "O"
                 if (!sucsess) {
 
@@ -686,7 +693,7 @@ upsetMove(move) {
         }
        
         function testBoard(production, board) {
-            var gameTiles = boardDivToArray(board.children[0]),
+            var gameTiles = boardDivToArray(board.children[1]),
                 winner = undefined;
                 
                 (["X", "O"]).forEach(turn => {
@@ -765,7 +772,7 @@ upsetMove(move) {
             if (board.turn != " ") board.makeAiMove(board, board.turn, (board.turn=="X")?0:1)
             var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
             intervals["aiBoardLoop"] = setTimeout(() => {
-                    if (board.children[1].children.length >= 1) {
+                    if (board.children[2].children.length >= 1) {
 
                         aiBoardLoop(board, ai)
                     }
@@ -795,7 +802,7 @@ upsetMove(move) {
 
                     
 
-                    board.children[1].id = details.slotId
+                    board.children[2].id = details.slotId
                     
                     board.classList.add(`type-${id}`)
                     var idid = details.id
@@ -816,7 +823,7 @@ upsetMove(move) {
 
                     }
                     board.__proto__.makeAiMove = function(board, team, missRate=0.9)  {
-                        var gameBoard = board.children[0]
+                        var gameBoard = board.children[1]
 
                         var production = encomny.production.boards[board.type]
 
@@ -858,7 +865,7 @@ upsetMove(move) {
                         
                     }
                     board.__proto__.reset = function(board) {
-                        var tiles = board.children[0].children
+                        var tiles = board.children[1].children
                         for (let i = 0; i < tiles.length; i++) {
                             const tile = tiles[i];
                             tile.textContent = ""
@@ -873,21 +880,32 @@ upsetMove(move) {
 
                     board.type = id
 
-                    board.children[2].children[1].addEventListener("click", ()=>{
+                    board.children[0].childNodes[1].onclick = function(){
+                        this.parentElement.parentElement.remove()
+                        if (document.getElementById("boardBin").children.length <= 0) {
+                            setTimeout(() => {
+                                alert("¯\\_(ツ)_/¯")
+                            }, 100);
+                            
+                        }
+                    }
+                       
+
+                    board.children[3].children[1].addEventListener("click", ()=>{
                         var board = document.getElementById(idid)
                         if (makePurchase(board.costs.speed)) {
                             board.stats.speed = 1000/((1000/board.stats.speed)*1.05)
                             board.costs.speed = multiplyCost(board.costs.speed, 1.15)
-                            board.children[2].children[1].innerHTML = `Upgrade Speed +10%<br>${board.costs.speed}`
+                            board.children[3].children[1].innerHTML = `Upgrade Speed +10%<br>${board.costs.speed}`
                         }
                     })
-                    board.children[2].children[4].addEventListener("click", ()=>{
+                    board.children[3].children[4].addEventListener("click", ()=>{
                         var board = document.getElementById(idid)
                         if (makePurchase(board.costs.skill)) {
                             board.stats.missRate = (board.stats.missRate)*0.9090909091
                             board.costs.skill = multiplyCost(board.costs.skill, 1.1)
 
-                            board.children[2].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
+                            board.children[3].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
                         }
                     })
                     board.disadvantage = encomny.startingStats.boards[id]["disadvantage"]
@@ -907,7 +925,7 @@ upsetMove(move) {
                     var board = createElementFromHTML(document.getElementById(`preset-${type}Ai`).innerHTML),
                         bin = document.getElementById("botBinDiv")
 
-                    board.childNodes[0].textContent = name
+                    board.childNodes[1].textContent = name
 
                     board.id = `${Math.random()}`
                         
@@ -1262,6 +1280,10 @@ upsetMove(move) {
             
             <div id="presetBoard-basic" style="display: none;">
                 <div class="board type-${id}" id="${Math.random()}">
+                    <div class="boardHeader">
+                        
+                        <button style="float: right;" id="boardRecycleButton">Delete Board</button>
+                    </div>
                     <div class="boardGameArea">                    
                         <div class="boardGameSquare" onclick="mouseClickGameTile(this, 1)">                                            
                         </div>                    
@@ -1295,6 +1317,10 @@ upsetMove(move) {
             </div>
 
             <div id="presetBoard-gold-basic" style="display: none;">
+                <div class="boardHeader">
+                        
+                    <button style="float: right;" id="boardRecycleButton">Delete Board</button>
+                </div>
                 <div class="board type-${id}" id="${Math.random()}">
                     <div class="boardGameArea">                    
                         <div class="boardGameSquare" onclick="mouseClickGameTile(this, 1)">                                            
@@ -1329,6 +1355,10 @@ upsetMove(move) {
             </div>
             
             <div id="presetBoard-1d" style="display: none;">
+                <div class="boardHeader">
+                        
+                    <button style="float: right;" id="boardRecycleButton">Delete Board</button>
+                </div>
                 <div class="board type-${id}" id="${Math.random()}">
                     <div class="boardGameArea">                    
                         <div class="boardGameSquare" onclick="mouseClickGameTile(this, 1)">                                            
@@ -1377,6 +1407,7 @@ upsetMove(move) {
 
         <script>
 
+            
             
 
             window.onload = ()=>{
@@ -1462,7 +1493,7 @@ upsetMove(move) {
             }
 
             setInterval(updateProgressBar, 50)
-            var saveVersion = "v11"
+            var saveVersion = "v14"
             function getGameData() {
                 var data = {
                     saveVersion:saveVersion,
@@ -1486,7 +1517,7 @@ upsetMove(move) {
                         costs:board.costs,
 
                         id:board.id,
-                        slotId:board.children[1].id
+                        slotId:board.children[3].id
                         
                     })
                 }

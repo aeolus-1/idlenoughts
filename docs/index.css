@@ -4,7 +4,7 @@ img {
 html {
     overflow: hidden;
     height: 100%;
-    zoom: 83%;
+    zoom: 90%;
     font-family: 'Courier New', Courier, monospace;
 
 }
@@ -143,6 +143,12 @@ i {
 
     float: left;
     
+}
+.boardHeader {
+    margin: 10px;
+    margin-bottom: -5px;
+    width: 90%;
+    min-height: 20px;
 }
 .typeAi-tactotic-c {
     background: rgb(55, 106, 184);

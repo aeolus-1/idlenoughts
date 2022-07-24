@@ -8,6 +8,10 @@ quick link - [https://idlenoughts.tk/]
 
 
 ## change log
+<b>v0.1.4.1</b>
+- added non-functional leaderboard
+- balence changes
+
 <b>v0.1.4</b>
 - Added Standard format (including costs)
 - Tooltips and descriptions

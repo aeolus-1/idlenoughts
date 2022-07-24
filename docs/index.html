@@ -123,6 +123,8 @@ upsetMove(move) {
 }
 }
     
+
+
     </script>
     <script>
 
@@ -291,8 +293,42 @@ upsetMove(move) {
             var num = cost.split(" ")[0],
                 curr = cost.split(" ")[1]
 
-            return `${Math.round(num*float)} ${curr}`
+            var num = (Math.round(num*float))
+
+            //num = roundCostToFormat(num)
+            console.log(num)
+            
+
+            return `${num} ${curr}`
         }
+
+        function roundCostToFormat(value) {
+            var g = ["","K","M","B","T","Qa","Qt","Sx","Sp","Oc","No","Dc","UDc","DDc","TDc","QaDc","QtDc","SxDc","SpDc","ODc","NDc","Vg","UVg","DVg","TVg","QaVg","QtVg","SxVg","SpVg","OVg","NVg","Tg","UTg","DTg","TTg","QaTg","QtTg","SxTg","SpTg","OTg","NTg","Qd","UQd","DQd","TQd","QaQd","QtQd","SxQd","SpQd","OQd","NQd","Qi","UQi","DQi","TQi","QaQi","QtQi","SxQi","SpQi","OQi","NQi","Se","USe","DSe","TSe","QaSe","QtSe","SxSe","SpSe","OSe","NSe","St","USt","DSt","TSt","QaSt","QtSt","SxSt","SpSt","OSt","NSt","Og","UOg","DOg","TOg","QaOg","QtOg","SxOg","SpOg","OOg","NOg","Nn","UNn","DNn","TNn","QaNn","QtNn","SxNn","SpNn","ONn","NNn","Ce"]
+
+            if (typeof value === 'string') {
+                var num = value.split(" ")[0],
+                    curr = value.split(" ")[1],
+
+                    splitSh = sh(num).split(" "),
+
+                    exp = g.indexOf(splitSh[1])
+                    if (exp == -1) exp = 0
+
+
+                return `${Math.pow(10, exp*3)*parseFloat(splitSh[0])} ${curr}`
+            } else {
+
+                var splitSh = sh(value).split(" "),
+                exp = g.indexOf(splitSh[1])
+                if (exp == -1) exp = 0
+
+
+                return Math.pow(10, exp*3)*parseFloat(splitSh[0])
+
+            }
+        }
+
+
         var ais = new Array()
 
         function listAi(ele, id, type) {
@@ -396,18 +432,32 @@ upsetMove(move) {
             <h2>B.reef</h2>
             <p><a href="https://github.com/aeolus-1/idlenoughts">->github here<-</a></p>
             <button id="restartButton">Restart</button>
+            <button style="float: right; font-size: large;" id="helpMenuButton">?</button>
+            
         </div>
         
         
-        <div id="currencyDiv" class="headerContent">
-            <p>Tics: 0</p>
-            <p>Tacs: 0</p>
-            <p style="display: inline-block;">Toes: 0 </p>
+        <div id="currencyDiv" class="headerContent tooltip">
+            
+            <p>
+                Tics: 0
+            </p>
+            
+            <p>
+                Tacs: 0
+            </p>
+
+            <p style="display: inline-block;">
+                Toes: 0
+            </p>
+
             <b>
                  + 0 Toes 
                  <button id="presigeButton">New Game Plus</button><br><br>
                  <button id="toeShopButton" style="width:100%; height: 40px;">Toe Shop</button>
             </b>
+            <span id="tooltip" class="tooltiptext">278362687</span>
+
         </div>
         <div style="margin-top: -10px;" id="botUpgradeDiv">
             <div id="botUpgradeSlot" class="aiHolder" style="width: 130px; height: 130px; float: left; margin-top: -15px;" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -445,6 +495,19 @@ upsetMove(move) {
 
         </div>
     </div>
+    <div id="helpMenu" class="overlayScreen">
+        <button id="helpClose">Close</button>
+        <h1>How To Play</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut venenatis justo, id congue mauris. Sed ultricies dignissim massa, ac pharetra nisi tempor ac. Curabitur non tempor orci. Pellentesque fringilla venenatis dolor, eu venenatis sem. Ut mollis nisi et enim gravida, at volutpat ligula rhoncus. Donec efficitur et enim a feugiat. Cras tempus enim erat, in rutrum tortor scelerisque non. Fusce augue risus, imperdiet sit amet convallis ac, molestie in enim. Mauris lacus leo, ornare eu nunc quis, dignissim fermentum mauris. Integer ullamcorper augue magna, a lacinia nulla consectetur at. Praesent blandit felis id urna tempus eleifend. Suspendisse potenti. Morbi ullamcorper tincidunt tortor, ut gravida metus faucibus et. Nulla fringilla, libero ut ullamcorper elementum, tortor leo dictum massa, porta sodales nisl nulla congue orci. Quisque luctus diam sit amet sem posuere scelerisque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+
+        <p>Sed sed lobortis est, in placerat lacus. Duis ac sollicitudin ante, at feugiat turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum ornare purus eros, sit amet finibus augue rutrum eget. Sed malesuada magna a placerat auctor. Nullam dapibus nisi sed lacus bibendum, vel lacinia justo finibus. Aliquam porttitor semper pharetra. Proin ligula tortor, placerat sed interdum porttitor, cursus eu massa.</p>
+
+        <p>Morbi lobortis odio lectus, sit amet lobortis arcu dapibus quis. Nullam sit amet bibendum sapien. Quisque mi lectus, porta id ligula non, varius aliquam eros. Suspendisse dui justo, lobortis ut neque cursus, fringilla euismod quam. Nam non rhoncus nisi. Nunc sit amet arcu pharetra, pretium massa vel, dapibus nibh. Aenean eget blandit massa. Vivamus egestas nisi sed suscipit vulputate. Quisque pharetra porttitor eros sit amet vestibulum. Aliquam ex nibh, suscipit id cursus vitae, consectetur faucibus metus. Nunc semper orci orci, nec consequat justo eleifend non. Cras vitae semper mi, vel ultrices est. In congue imperdiet hendrerit. Nullam fermentum ex quam, ut tincidunt lorem accumsan eu. Aliquam dictum nisi quis ante mollis, ut consectetur augue vehicula. Proin vestibulum orci mauris, in cursus tortor dapibus sit amet.</p>
+
+        <p>Donec ullamcorper erat mi, eu fermentum justo scelerisque quis. In a quam justo. Cras fermentum in nisi non fringilla. Fusce ipsum nisi, aliquet sed nulla volutpat, vulputate tristique est. Fusce commodo, odio sit amet venenatis condimentum, est arcu consequat ex, sed scelerisque libero felis egestas purus. Sed id semper est, et ornare neque. Fusce laoreet at nisl et semper. Pellentesque odio est, luctus at mattis vitae, rhoncus in risus. Donec tempus nisi massa, ac sodales enim congue in.</p>
+
+        <p>Aenean eget laoreet metus. Sed felis orci, fringilla et dolor et, tempus tempor lectus. Etiam scelerisque felis orci. Cras aliquam, dui pulvinar dapibus egestas, eros nunc egestas magna, non interdum lectus ex at eros. Nulla pulvinar viverra odio, et pharetra leo sollicitudin nec. Pellentesque dignissim, quam quis congue vehicula, mi odio auctor magna, eget tincidunt metus magna sed arcu. Praesent augue velit, finibus sit amet porta ut, scelerisque nec felis. Curabitur scelerisque, orci a dapibus volutpat, augue enim vestibulum mi, vel dapibus justo metus nec nisl. Aliquam a elit in lectus rhoncus cursus et vel est. Suspendisse dictum mauris tincidunt iaculis egestas.</p>
+    </div>
     <script>
         document.getElementById("toeShop").style.display = "none"
         document.getElementById("toeShopButton").onclick = function(){
@@ -453,6 +516,15 @@ upsetMove(move) {
         document.getElementById("toeShopClose").onclick = function(){
             document.getElementById("toeShop").style.display = "none"
         }
+        document.getElementById("helpMenu").style.display = "none"
+        document.getElementById("helpMenuButton").onclick = function(){
+            document.getElementById("helpMenu").style.display = ""
+        }
+        document.getElementById("helpClose").onclick = function(){
+            document.getElementById("helpMenu").style.display = "none"
+        }
+
+        
 
         
         
@@ -461,7 +533,7 @@ upsetMove(move) {
 
 
         document.getElementById("restartButton").onclick = function() {
-            if (confirm("Are sure you want to restart????????????") && confirm("All progress will be lost (ಥ﹏ಥ)")) {
+            if (confirm("Are sure you want to restart????????????")) {
                 restartGame()
                 currency = {
                     "tics":10,
@@ -555,6 +627,12 @@ upsetMove(move) {
         }
 
         function sh(value) {
+            if (typeof value === 'string') {
+                var num = value.split(" ")[0],
+                    curr = value.split(" ")[1]
+
+                return `${(new ADNotations.StandardNotation().format(num, 2, 0))} ${curr}`
+            } 
             return new ADNotations.StandardNotation().format(value, 2, 0)
         }
 
@@ -572,6 +650,13 @@ upsetMove(move) {
             document.getElementById("upgradeTierButton").innerHTML = `Upgrade Tier<br>${gameTier.cost}`
 
             document.getElementById("toeShopButton").innerHTML = `Toe Shop<br><b>Tier ${gameTier.state}</b>`
+
+
+            document.getElementById("boardCapDiv").innerHTML = `${document.getElementById("boardBin").children.length}/9 Boards`
+
+            var tooltip = div.children["tooltip"].innerHTML = `<p>Ti:${currency.tics}</p><p>Ta:${currency.tacs}</p><p>To:${currency.toes}</p>`
+
+            console.log(tooltip)
 
 
         }
@@ -603,7 +688,6 @@ upsetMove(move) {
 
                 var speedDisplay = ai.ele.children[2],
                     toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
-                console.log(round(1000/(ai.stats.speed*toeSpeedBuff), 1), speedDisplay.children[0])
                 speedDisplay.children[0].textContent = `Speed: ${round(1000/(ai.stats.speed*toeSpeedBuff), 1)}ps`
 
 
@@ -664,7 +748,7 @@ upsetMove(move) {
                             speed:1.5,
                             skill:1.15,
                         }[upgrade]
-                        toeEncomny.costs[upgrade] *= 4
+                        toeEncomny.costs[upgrade] *= 6
                     }
                 }
             }
@@ -798,7 +882,8 @@ upsetMove(move) {
             } 
 
             var aiSkill = 1-((1-(ai.stats.missRates[board.type]*ai.stats.globalSkill))*(1-board.disadvantage))
-            if (board.turn != " ") board.makeAiMove(board, board.turn, (board.turn=="X")?0:1)
+            if (board.turn != " ") board.makeAiMove(board, board.turn, (board.turn=="X")?aiSkill:board.stats.missRate)
+
             var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
             intervals["aiBoardLoop"] = setTimeout(() => {
                     if (board.children[2].children.length >= 1) {
@@ -823,7 +908,7 @@ upsetMove(move) {
                 slotId:`${Math.random()}`,
                 ...details,
             }
-            if (cost || gameTier.state >= encomny.tierReq["boards"][id]) {
+            if (cost || (gameTier.state >= encomny.tierReq["boards"][id] && document.getElementById("boardBin").children.length < 9)) {
                 if (cost || (makePurchase(encomny.costs.boards[id]))) {
                     encomny.costs.boards[id] = multiplyCost(encomny.costs.boards[id], 1.15)
                     var board = createElementFromHTML(document.getElementById(`presetBoard-${id}`).innerHTML),
@@ -971,6 +1056,8 @@ upsetMove(move) {
         }
     </script>
 
+    
+
     <div style="margin-top: 200px;">
         <div class="sideBar" >
             <div class="buySideBar">
@@ -978,7 +1065,7 @@ upsetMove(move) {
                     <button class="collapsible">Board Ais ⬆︎</button>
 
                     <div class="collapsibleContent">
-                        <div class="buyBlock">
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('jai', 'board')">BUY MONEY $$$</button>
 
                             jai AI<br>
@@ -987,9 +1074,16 @@ upsetMove(move) {
                                 Learning Rate:[skillNum]<br>
                                 Speed:[speedNum]
                             </p>
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Jai Ai</h3>
+                                <p>Not the brightest AI out there. Takes after it's namesake.</p>
+                                <p>Speed: 700ms<br>LearningRate: 100%</p>
+                                <p id="tierReqBox"></p>
+                            </span>
 
                         </div>
-                        <div class="buyBlock">
+                        
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('baby', 'board')">BUY MONEY $$$</button>
 
                             Baby AI<br>
@@ -998,9 +1092,15 @@ upsetMove(move) {
                                 Learning Rate:[skillNum]<br>
                                 Speed:[speedNum]
                             </p>
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Baby AI</h3>
+                                <p>I would make a baby related joke but I've never had a baby before. Still better than Jai AI tho</p>
+                                <p>Speed: 700ms<br>LearningRate: 150%</p>
+                                <p id="tierReqBox"></p>
+                            </span>
 
                         </div>
-                        <div class="buyBlock">
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('mid', 'board')">BUY MONEY $$$</button>
 
                             Mid AI<br>
@@ -1010,8 +1110,15 @@ upsetMove(move) {
                                 Speed:[speedNum]
                             </p>
 
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Mid AI</h3>
+                                <p>Midder than Mordius(2022).</p>
+                                <p>Speed: 700ms<br>LearningRate: 350%</p>
+                                <p id="tierReqBox"></p>
+                            </span>
+
                         </div>
-                        <div class="buyBlock">
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('adult', 'board')">BUY MONEY $$$</button>
 
                             Adult AI<br>
@@ -1021,8 +1128,15 @@ upsetMove(move) {
                                 Speed:[speedNum]
                             </p>
 
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Adult AI</h3>
+                                <p>An responsible, independant AI with only a 5% learning rate increase compared to a Mid AI. There is minimal use in buy this. Dont buy this.</p>
+                                <p>Speed: 700ms<br>LearningRate: 400%</p>
+                                <p id="tierReqBox"></p>
+                            </span>
+
                         </div>
-                        <div class="buyBlock">
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('genius', 'board')">BUY MONEY $$$</button>
 
                             Genius AI<br>
@@ -1032,6 +1146,13 @@ upsetMove(move) {
                                 Speed:[speedNum]
                             </p>
 
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Genius AI</h3>
+                                <p>Digital enbodiement of the devolper.</p>
+                                <p>Speed: 700ms<br>LearningRate: 700%</p>
+                                <p id="tierReqBox"></p>
+                            </span>
+
                         </div>
                     </div>
                 </div>
@@ -1039,7 +1160,7 @@ upsetMove(move) {
                     <button class="collapsible">Converter Ais ⬆︎</button>
 
                     <div class="collapsibleContent">
-                        <div class="buyBlock">
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('tactotic-c', 'converter')">BUY MONEY $$$</button>
 
                             Tac to Tic AI<br>
@@ -1048,15 +1169,31 @@ upsetMove(move) {
                                 Speed:[speedNum]
                             </p>
 
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Tac to Tic AI</h3>
+                                <p>Standard run of the mill ticcoin miner</p>
+                                <p>Speed: 1500ms</p>
+                                <p>1 Tac -> 1 Tic</p>
+                                <p id="tierReqBox"></p>
+                            </span>
+
                         </div>
-                        <div class="buyBlock">
+                        <div class="buyBlock tooltip">
                             <button style="float: right; width: 60px; height: 100%;" onclick="buyAI('tac&tictotoe-c', 'converter')">BUY MONEY $$$</button>
 
-                            Tic to Toe AI<br>
+                            Tisc to Toe AI<br>
 
                             <p id="tac&tictotoe-c-AiBuyDisplay">
                                 Speed:[speedNum]
                             </p>
+
+                            <span id="tooltip" class="tooltiptext">
+                                <h3>Toe Converter AI</h3>
+                                <p>DM me if you have joke<br>plz</p>
+                                <p>Speed: 5000ms</p>
+                                <p>50 Tics -> 1 Toe</p>
+                                <p id="tierReqBox"></p>
+                            </span>
 
                         </div>
                         
@@ -1066,7 +1203,7 @@ upsetMove(move) {
             </div>
             <div class="buySideBar">
                 <div >
-                    <div class="buyBlock" style="height: 150px;" id="basic-BoardBuyDisplay">
+                    <div class="buyBlock tooltip" style="height: 150px;" id="basic-BoardBuyDisplay">
                         <button style="float: right; width: 60px; height: 100%;" onclick="buyBoard('basic')">BUY MONEY $$$</button>
     
                         <b>Basic Board</b><br>
@@ -1078,9 +1215,17 @@ upsetMove(move) {
                             <br>
                             Disadvantage: 0
                         </p>
+
+                        <span id="tooltip" class="tooltiptext">
+                            <h3>Basic Board</h3>
+                            <p><a href="https://aeolus-1.github.io/triangleGame.github.io/">>Click here for a free 500 Bitcoin (NO JOKE)<</a></p>
+                            <p>Speed: 300ms<br>Difficulty: 15%</p>
+                            <p>Produces 1 tics per win</p>
+                            <p id="tierReqBox"></p>
+                        </span>
     
                     </div>
-                    <div class="buyBlock" style="height: 150px;" id="gold-basic-BoardBuyDisplay">
+                    <div class="buyBlock tooltip" style="height: 150px;" id="gold-basic-BoardBuyDisplay">
                         <button style="float: right; width: 60px; height: 100%;" onclick="buyBoard('gold-basic')">BUY MONEY $$$</button>
     
                         <b>Gold Basic Board</b><br>
@@ -1093,9 +1238,18 @@ upsetMove(move) {
                             <br>
                             Disadvantage: 0.5
                         </p>
+
+                        <span id="tooltip" class="tooltiptext">
+                            <h3>Gold Board</h3>
+                            <p>Produces gold</p>
+                            <p>Speed: 3000ms<br>Difficulty: 80%</p>
+                            <p>Produces 1 toe per win</p>
+
+                            <p id="tierReqBox"></p>
+                        </span>
     
                     </div>
-                    <div class="buyBlock" style="height: 150px;" id="1d-BoardBuyDisplay">
+                    <div class="buyBlock tooltip" style="height: 150px;" id="1d-BoardBuyDisplay">
                         <button style="float: right; width: 60px; height: 100%;" onclick="buyBoard('1d')">BUY MONEY $$$</button>
     
                         <b>1D Board</b><br>
@@ -1108,6 +1262,15 @@ upsetMove(move) {
                             <br>
                             Disadvantage: 0.5
                         </p>
+
+                        <span id="tooltip" class="tooltiptext">
+                            <h3>1D Board</h3>
+                            <p>An Irish teen-pop board<br>IDK I don't listen to their music</p>
+                            <p>Speed: 250ms<br>Difficulty: 15%</p>
+                            <p>Produces 2 tics per win</p>
+
+                            <p id="tierReqBox"></p>
+                        </span>
     
                     </div>
                     
@@ -1272,7 +1435,7 @@ upsetMove(move) {
             
             <div id="preset-boardAi" style="display: none;">
                 <div id="${Math.random()}" class="botDraggableEle" draggable="true" ondragstart="drag(event)">
-                      [Name]<br>
+                      [Name]<br> 
                       <i>- Type</i>
                       <p><b>Speed: 1</b><br>  
                         <b>Skill:</b>  
@@ -1303,6 +1466,7 @@ upsetMove(move) {
             
         </div>
 
+        <p id="boardCapDiv">0/15 Boards</p>
         <hr>
     
         <div class="pageSection">
@@ -1455,18 +1619,20 @@ upsetMove(move) {
 
                 function setAIBuy(id) {
                     if (gameTier.state < encomny.tierReq["ais"][id]){ 
+                        document.getElementById(`${id}-AiBuyDisplay`).parentElement.children["tooltip"].children["tierReqBox"].textContent = `Unlocked at Tier ${encomny.tierReq["ais"][id]}`
                         document.getElementById(`${id}-AiBuyDisplay`).parentElement.classList.add("shaded")
                     } else {
+                        document.getElementById(`${id}-AiBuyDisplay`).parentElement.children["tooltip"].children["tierReqBox"].textContent = ""
                         document.getElementById(`${id}-AiBuyDisplay`).parentElement.classList.remove("shaded")
                     }
                     if (id[id.length-2] == "-") {
                         var production = encomny.production.ais[id]
-                        document.getElementById(`${id}-AiBuyDisplay`).innerHTML = `Speed:${encomny.startingStats.ais[id].speed}<br><br>${getConverterValues(production.input)}<br>⬇︎<br>${getConverterValues(production.output)}`
+                        document.getElementById(`${id}-AiBuyDisplay`).innerHTML = `Speed:${encomny.startingStats.ais[id].speed}`
                     } else {
                         document.getElementById(`${id}-AiBuyDisplay`).innerHTML = `Learning Rate: ${encomny.startingStats.ais[id].skill}<br>Speed: ${encomny.startingStats.ais[id].speed}`
                     }
 
-                    document.getElementById(`${id}-AiBuyDisplay`).parentElement.children[0].textContent = `${encomny.costs["ais"][id]}`
+                    document.getElementById(`${id}-AiBuyDisplay`).parentElement.children[0].textContent = `${sh(encomny.costs["ais"][id])}`
 
                     
                 };
@@ -1475,11 +1641,13 @@ upsetMove(move) {
 
                 function setBoardBuy(id) {
                     if (gameTier.state < encomny.tierReq["boards"][id]){ 
+                        document.getElementById(`${id}-BoardBuyDisplay`).children["tooltip"].children["tierReqBox"].textContent = `Unlocked at Tier ${encomny.tierReq["boards"][id]}`
                         document.getElementById(`${id}-BoardBuyDisplay`).classList.add("shaded")
                     } else {
+                        document.getElementById(`${id}-BoardBuyDisplay`).children["tooltip"].children["tierReqBox"].textContent = ""
                         document.getElementById(`${id}-BoardBuyDisplay`).classList.remove("shaded")
                     }
-                    document.getElementById(`${id}-BoardBuyDisplay`).children[0].textContent = encomny.costs.boards[id]
+                    document.getElementById(`${id}-BoardBuyDisplay`).children[0].textContent = sh(encomny.costs.boards[id])
                     document.getElementById(`${id}-BoardBuyDisplay`).children[4].innerHTML = `Speed: ${round(encomny.startingStats.boards[id].speed, 3)}<br>Difficulty: ${round(1-encomny.startingStats.boards[id].skill, 3)}<br>Disadvantage: ${round(encomny.startingStats.boards[id].disadvantage, 3)}`
                     /*
                     document.getElementById(`${id}-BoardBuyDisplay`).children = document.getElementById(`${id}-BoardBuyDisplay`).textContent.replace("[skillNum]", encomny.startingStats["ais"][id].skill).replace("[speedNum]", encomny.startingStats["ais"][id].speed)
@@ -1522,7 +1690,7 @@ upsetMove(move) {
             }
 
             setInterval(updateProgressBar, 50)
-            var saveVersion = "v14"
+            var saveVersion = "v16"
             function getGameData() {
                 var data = {
                     saveVersion:saveVersion,
@@ -1546,7 +1714,7 @@ upsetMove(move) {
                         costs:board.costs,
 
                         id:board.id,
-                        slotId:board.children[3].id
+                        slotId:board.children[2].id
                         
                     })
                 }
@@ -1566,6 +1734,7 @@ upsetMove(move) {
                         
                     })
                 }
+
 
                 return data
             }
@@ -1618,6 +1787,8 @@ upsetMove(move) {
                     newAi.attachedBoard = bin
                     newAi.droppedElement = bin
 
+                    
+
 
                     if (bin.parentElement.classList[0] == "board") {
                         aiBoardLoop(bin.parentElement, board.aiObject)
@@ -1652,6 +1823,26 @@ upsetMove(move) {
             });
         }
 
+        var mouse = {
+            pos:v(),
+            down:false,
+        }
+        document.addEventListener("mousemove", function(ev){
+            mouse.pos.x = ev.pageX
+            mouse.pos.y = ev.pageY
+        })
+
+        setInterval(() => {
+            var tooltips = document.getElementsByClassName("tooltiptext")
+            for (let i = 0; i < tooltips.length; i++) {
+                const tooltip = tooltips[i];
+                tooltip.style.left = `${mouse.pos.x+50}px`
+                tooltip.style.top = `${mouse.pos.y+50}px`
+
+            }
+        }, (1000/30));
+        
+
         restartGame()
         </script>
 
@@ -1674,6 +1865,8 @@ upsetMove(move) {
                 }
             } else {
                 saveGame()
+                document.getElementById("helpMenu").style.display = ""
+
             }
 
             setInterval(() => {

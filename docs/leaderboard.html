@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard - Idle Noughts</title>
+    <style>
+      table {
+        border: 1px solid black;
+        width: 40%;
+      }
+      tr {
+        border: 1px solid black;
+      }
+      th {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="personalScore">
+      <tr>
+        <th id="nameDisplay"></th>
+        <th id="scoreDisplay"></th>
+      </tr>
+    </table>
+    <br />
+    <table id="mainTable"></table>
+    <script>
+      window.onload = () => {
+        if (!window.navigator.onLine) {
+          alert("no connection")
+          throw new Error("no internet connection");
+        }
+
+        //FETCH SCRIPT GOES HERE
+        var leaderJSON =
+          '[{"_id":"62d8caf86cb0ede0c14ae766","browserId":"random ass id","tics":"666"},{"_id":"62d8cc906cb0ede0c14ae767","browserId":"random asmms id","tics":"6636"},{"_id":"62d8cca36cb0ede0c14ae768","browserId":"random ass id","tics":"88666"}]';
+
+        leaderJSON = JSON.parse(leaderJSON);
+
+        leaderJSON.sort((a, b) => {
+          return -Math.sign(parseInt(a.tics) - parseInt(b.tics));
+        });
+
+        var personalScore = JSON.parse(atob(localStorage.getItem("date")));
+
+        console.log(personalScore);
+        var mainTable = document.getElementById("mainTable");
+        for (let i = 0; i < leaderJSON.length; i++) {
+          const entry = leaderJSON[i];
+          console.log(entry);
+          var row = document.createElement("tr"),
+            numEntry = document.createElement("th"),
+            nameEntry = document.createElement("th"),
+            scoreEntry = document.createElement("th");
+
+          numEntry.textContent = i;
+          nameEntry.textContent = entry.browserId;
+          scoreEntry.textContent = `${entry.tics} tics`;
+
+          row.appendChild(numEntry);
+          row.appendChild(nameEntry);
+          row.appendChild(scoreEntry);
+
+          mainTable.appendChild(row);
+        }
+
+        document.getElementById("nameDisplay").textContent = "your name IDK";
+        document.getElementById(
+          "scoreDisplay"
+        ).textContent = `${personalScore.currency.tics} tics`;
+
+        setTimeout(() => {
+          alert("Will actually work when jake gets the database fixed");
+        }, 100);
+      };
+    </script>
+  </body>
+</html>

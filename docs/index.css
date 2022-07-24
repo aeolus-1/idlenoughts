@@ -21,8 +21,45 @@ p {
 i {
     font-size: 10px;
 }
+
+/* Tooltip container */
+.tooltip {
+/* If you want dots under the hoverable text */
+}
+.tooltiptext {
+    color: black;
+
+
+}
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 400px;
+  max-width: 500px;
+  min-height: 50px;
+  background: rgb(190, 190, 190);
+  padding: 5px 0;
+
+
+ 
+  /* Position the tooltip text - see examples below! */
+    position: fixed;
+  z-index: 1;
+  margin-top: 15px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+
 .shaded {
-    opacity: 20%;
+    color: rgba(128, 128, 128, 0.226);
+}
+.shaded button {
+    opacity: 0.1;
 }
 .footer p, h3 {
     line-height: 0%;
@@ -42,6 +79,23 @@ i {
     margin-right: 30px;
 
 }
+
+#helpMenu {
+    position: fixed;
+    margin-left: 30%;
+    width: 40%;
+    overflow: scroll;
+    padding: 30px;
+    box-sizing: border-box;  
+
+}
+#helpClose {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 60px;
+    height: 30px;
+ }
 
 
 

@@ -8,6 +8,13 @@ quick link - [https://idlenoughts.tk/]
 
 
 ## change log
+<b>v0.1.4</b>
+- Added Standard format (including costs)
+- Tooltips and descriptions
+- Unfinished help menu
+- Board cap (9)
+- Large balance changes
+
 <b>v0.1.3.1</b>
 - Added Deleting Boards
 - Added restart game progress

@@ -1626,20 +1626,18 @@ function saveGame() {
     getBrowserId().then(id => {
         const data = { "username": username, "browserId": id, "tics": currency.tics };
         console.log(data)
+        fetch('https://idle-noughts-api.onrender.com/post/update', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     })
-
-
-    fetch('https://idle-noughts-api.onrender.com/post/update', {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
 
 }
 

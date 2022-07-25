@@ -1628,19 +1628,19 @@ function saveGame() {
         console.log(data)
     })
 
-    /*
-    fetch('https://example.com/profile', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-    */
+
+    fetch('https://idle-noughts-api.onrender.com/post/update', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
 }
 
 localStorage.setItem("mainGameSave-DO_NOT_TOUCH", btoa("ajksl ndkjahbskld huasndiuyagnsyduaksgydbkuasbdygadisugaisuydgbuiaygsdyuiasgdbiuybgasiudbguyiasbdiuagsiuydbgaiuysdiuygasydganoisydbgasyid8obadgicnsoidngliaugd cliygneliygnclifwbvfrgdnskgrefvifwygoxiewyboiyfbweygivfoiydgvwbeiouhdfhouwebfchowe7ivfoiuwegdigbeiouhvfiouywrgeofi7vowgriuyercfgnoiywrgfixnyorgwfibvoweygvfwgcyiowegfvbgwoey"))

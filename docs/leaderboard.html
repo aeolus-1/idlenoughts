@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <p>Leaderboard might take a few seconds to load if the API hasnt been interacted with in a while</p>
+    <p>Leaderboard might take a abit to load if the API hasnt been interacted with in a while</p>
     </br>
     <table id="personalScore">
         <tr>
@@ -42,7 +42,7 @@
                 .then((response) => response.json()) //2
                 .then((leaderJSON) => {
 
-
+                    console.log(leaderJSON)
                     leaderJSON.sort((a, b) => {
                         return -Math.sign(parseInt(a.tics) - parseInt(b.tics));
                     });

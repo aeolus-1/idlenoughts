@@ -212,23 +212,23 @@ upsetMove(move) {
                 },
                 "ais":{
                     "jai":{
-                        skill:1,
+                        skill:0.25,
                         speed:700,
                     },
                     "baby":{
-                        skill:1.5,
+                        skill:2,
                         speed:700,
                     },
                     "mid":{
-                        skill:3.5,
+                        skill:4,
                         speed:700,
                     },
                     "adult":{
-                        skill:4,
+                        skill:4.5,
                         speed:1000,
                     },
                     "genius":{
-                        skill:7.5,
+                        skill:10,
                         speed:700,
                     },
 
@@ -271,8 +271,8 @@ upsetMove(move) {
                     ],
                     "numerical":[
                         "0 tacs",
-                        "1 tacs",
-                        "8 tics",
+                        "3 tacs",
+                        "10 tics",
                     ],
                 },
             },
@@ -281,15 +281,15 @@ upsetMove(move) {
                     "basic": 1,
                     "gold-basic": 1,
                     "1d":2,
-                    "numerical":10,
+                    "numerical":3,
 
                 },
                 "ais":{
                     "jai": 1,
                     "baby": 1,
                     "mid": 1,
-                    "adult": 1,
-                    "genius": 2,
+                    "adult": 2,
+                    "genius": 3,
 
                     "tactotic-c": 1,
                     "tac&tictotoe-c":2,
@@ -1551,6 +1551,7 @@ upsetMove(move) {
                             <h3>Numerical Board</h3>
                             <p>The only board the AIs might be good</p>
                             <p>Speed: 250ms<br>Difficulty: 25%</p>
+                            <p>Produces 3 tacs per tie</p>
                             <p>Produces 10 tics per win</p>
 
                             <p id="tierReqBox"></p>

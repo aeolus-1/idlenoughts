@@ -1,4 +1,4 @@
-(function(){
+//(function(){
 var Board = {
 
     emptySlots(board) {
@@ -1688,4 +1688,4 @@ document.getElementById("usernameButton").onclick = function() {
 
 }
 
-})()
+//})()

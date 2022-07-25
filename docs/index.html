@@ -172,7 +172,7 @@ upsetMove(move) {
                     "basic": "17.8 tics",
                     "gold-basic": "1000 tics",
                     "1d": "1500 tics",
-                    "numerical": "0 tics",
+                    "numerical": "3000 tics",
 
                 },
                 "ais":{
@@ -281,7 +281,7 @@ upsetMove(move) {
                     "basic": 1,
                     "gold-basic": 1,
                     "1d":2,
-                    "numerical":99,
+                    "numerical":10,
 
                 },
                 "ais":{
@@ -722,7 +722,7 @@ upsetMove(move) {
 
 
                 board.children[3].children[0].textContent = `Speed: ${round(1000/board.stats.speed, 0)}`
-                board.children[3].children[3].textContent = `Skill: ${round(1-board.stats.missRate, 2)}`
+                board.children[3].children[3].textContent = `Skill: ${round(board.stats.missRate, 2)}`
 
 
             }
@@ -823,37 +823,60 @@ upsetMove(move) {
 
                     value = tile.textContent[0]
                 area.children[1].appendChild(tile)
+                board.turn = "O"
 
                 if (value != "" && board.turn == "O") {
+                    intervals["numericalMouseClick"] = setTimeout(()=>{
                     
-                    var result = evaluteNumericalBoard(board, "X"),
-                        foundTile = null
                     
-                    console.log(result)
-                    if (result.winner[0] == 0) {
-                        for (let i = 0; i < area.children[0].children.length; i++) {
-                            const tile = area.children[0].children[i];
-
-                            if (tile.textContent[0] == result.move+1) {
-                                foundTile = tile
-                                break
-                            } 
-                        }
-
-                        if (foundTile != null) {
-                            area.children[2].appendChild(foundTile)
-                        }
+                        var result = evaluteNumericalBoard(board, "X"),
+                            foundTile = null
                         
-                    } else {
-                        if (result.winner[0]==1) {
-                            console.log(area.children[1])
-                            area.children[1].textContent = `${result.winner[1][0]}+${result.winner[1][1]}+${result.winner[1][2]}=15`
+                        if (result.move == undefined) {
+                            board.children[1].innerHTML = document.getElementById("presetBoard-numerical").children[0].children[1].innerHTML
+
+                        } else
+                        if (result.winner[0] == 0) {
+                            for (let i = 0; i < area.children[0].children.length; i++) {
+                                const tile = area.children[0].children[i];
+
+                                if (tile.textContent[0] == result.move+1) {
+                                    foundTile = tile
+                                    break
+                                } 
+                            }
+
+                            if (foundTile != null) {
+                                area.children[2].appendChild(foundTile)
+                            }
+                            board.turn = "X"
+
+                            
                         } else {
-                            area.children[2].textContent = result.winner[1]
+                            if (result.winner[0]==1) {
+                                area.children[1].textContent = `${result.winner[1][0]}+${result.winner[1][1]}+${result.winner[1][2]}=15`
+                            } else {
+                                area.children[2].textContent = result.winner[1]
+                            }
+                            
+
+
+                            
+
                         }
-                    }
+                    }, board.stats.speed)
+
+                    var result = evaluteNumericalBoard(board, "X"),
+                            foundTile = null
+                        
+                        console.log("1", result)
+                        if (result.winner[0] != 0) {
+                            intervals["numericalMouseClick"] = setTimeout(()=>{
+                                board.children[1].innerHTML = document.getElementById("presetBoard-numerical").children[0].children[1].innerHTML
+                            }, board.stats.speed)
+
+                        }
                 } 
-                board.turn = "O"
             }
 
 
@@ -926,8 +949,9 @@ upsetMove(move) {
                 bin1:collapseBin(bin1),
                 bin2:collapseBin(bin2)
             },
-                (turn=="X")?
-                    ["_", "O", "X"]:["_", "X", "O"]
+                ((turn=="X")?
+                    ["_", "O", "X"]:["_", "X", "O"]),
+                    missRate
 
                 
             ),
@@ -940,7 +964,7 @@ upsetMove(move) {
             
             
         }
-        function makeNumericalAiMove(boardDat, playerTokens) {
+        function makeNumericalAiMove(boardDat, playerTokens, missRate) {
             var board = ["","","","","","","","",""],
                 conversion = [1,6,5,8,4,0,3,2,7]
 
@@ -961,9 +985,9 @@ upsetMove(move) {
             var move = lookup3b3[Board.compressBoard(board)]
             if (move != null) {
 
-                var move = conversion[emptySlots[randInt(0, emptySlots.length-1)]]//((move.y*3)+move.x)]
+                var move = ((Math.random()>missRate)?emptySlots[randInt(0, emptySlots.length-1)]:((move.y*3)+move.x))
 
-                return move
+                return conversion[move]
             }
         }
         
@@ -1104,10 +1128,12 @@ upsetMove(move) {
                         
                     } else {
                         if (result.winner[0]==1) {
+                            
                             area.children[1].textContent = `${result.winner[1][0]}+${result.winner[1][1]}+${result.winner[1][2]}=15`
                         } else {
-                            area.children[2].textContent = result.winner[1]
+                            area.children[2].textContent = `${result.winner[1][0]}+${result.winner[1][1]}+${result.winner[1][2]}=15`
                         }
+                        registerGame(encomny.production.boards["numerical"], result.winner[0])
 
                         board.children[1].innerHTML = document.getElementById("presetBoard-numerical").children[0].children[1].innerHTML
 
@@ -1119,7 +1145,7 @@ upsetMove(move) {
 
             var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
             intervals["aiBoardLoop"] = setTimeout(() => {
-                    if (board.children[2].children.length >= 1) {
+                    if (!(board.children[2].children.length < 1 && board.turn == "X")) {
 
                         aiNumericalBoardLoop(board, ai)
                     }
@@ -1250,7 +1276,7 @@ upsetMove(move) {
                     board.children[3].children[4].addEventListener("click", ()=>{
                         var board = document.getElementById(idid)
                         if (makePurchase(board.costs.skill)) {
-                            board.stats.missRate = (board.stats.missRate)*0.9090909091
+                            board.stats.missRate = (board.stats.missRate)*(0.9090909091)
                             board.costs.skill = multiplyCost(board.costs.skill, 1.1)
 
                             board.children[3].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
@@ -1999,7 +2025,7 @@ upsetMove(move) {
             }
 
             setInterval(updateProgressBar, 50)
-            var saveVersion = "v19"
+            var saveVersion = "v17"
             function getGameData() {
                 var data = {
                     saveVersion:saveVersion,
@@ -2059,6 +2085,8 @@ upsetMove(move) {
                 achievementProgress = saveDat.achievementProgress
 
                 saveDat.encomny.production = encomny.production
+                saveDat.encomny.tierReq = encomny.tierReq
+                saveDat.encomny.startingStats = encomny.startingStats
 
                 currency = saveDat.currency
                 toeEncomny = saveDat.toeEncomny

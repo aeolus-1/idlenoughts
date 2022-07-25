@@ -8,6 +8,12 @@ quick link - [https://idlenoughts.tk/]
 
 
 ## change log
+<b>v0.1.5</b>
+- Fixed game beraking multiple bugs
+- Numerical board in progress (will be added very very soon)
+- Added help menu
+- balence changes
+
 <b>v0.1.4.1</b>
 - added non-functional leaderboard
 - balence changes

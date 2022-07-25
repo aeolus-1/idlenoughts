@@ -1623,22 +1623,24 @@ async function getBrowserId() {
 function saveGame() {
     var gameData = btoa(JSON.stringify(getGameData()))
     localStorage.setItem("date", gameData)
-    var browserId = getBrowserId()
-    const data = { "username": username, "browserId": browserId, "tics": currency.tics };
-    console.log(data)
-        /*
-        fetch('https://example.com/profile', {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-        */
+    getBrowserId().then(id => {
+        const data = { "username": username, "browserId": id, "tics": currency.tics };
+        console.log(data)
+    })
+
+    /*
+    fetch('https://example.com/profile', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+    */
 }
 
 localStorage.setItem("mainGameSave-DO_NOT_TOUCH", btoa("ajksl ndkjahbskld huasndiuyagnsyduaksgydbkuasbdygadisugaisuydgbuiaygsdyuiasgdbiuybgasiudbguyiasbdiuagsiuydbgaiuysdiuygasydganoisydbgasyid8obadgicnsoidngliaugd cliygneliygnclifwbvfrgdnskgrefvifwygoxiewyboiyfbweygivfoiydgvwbeiouhdfhouwebfchowe7ivfoiuwegdigbeiouhvfiouywrgeofi7vowgriuyercfgnoiywrgfixnyorgwfibvoweygvfwgcyiowegfvbgwoey"))

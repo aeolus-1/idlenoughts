@@ -18,6 +18,7 @@
     </style>
   </head>
   <body>
+    Loading
     <table id="personalScore">
       <tr>
         <th id="nameDisplay"></th>
@@ -35,7 +36,7 @@
         fetch("https://idle-noughts-api.onrender.com/get/leaderboard") //1
   .then((response) => response.json()) //2
   .then((leaderJSON) => {
- 
+    document.body.childNodes[0].textContent = ""
 
         leaderJSON.sort((a, b) => {
           return -Math.sign(parseInt(a.tics) - parseInt(b.tics));
@@ -43,9 +44,10 @@
 
         var personalScore = JSON.parse(atob(localStorage.getItem("date")));
 
-        console.log(personalScore);
         var mainTable = document.getElementById("mainTable");
-        for (let i = 1; i < leaderJSON.length; i++) {
+
+
+        for (let i = 0; i < leaderJSON.length; i++) {
           const entry = leaderJSON[i];
           console.log(entry);
           var row = document.createElement("tr"),
@@ -69,9 +71,7 @@
           "scoreDisplay"
         ).textContent = `${personalScore.currency.tics} tics`;
 
-        setTimeout(() => {
-          alert("Will actually work when jake gets the database fixed");
-        }, 100);
+        
 
   });
       }

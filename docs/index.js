@@ -1,4 +1,4 @@
-//(function(){
+(function(){
 var Board = {
 
     emptySlots(board) {
@@ -668,7 +668,7 @@ function createElementFromHTML(htmlString) {
     return div.firstChild;
 }
 
-function mouseClickGameTile(ev, num) {
+window.mouseClickGameTile = function(ev, num) {
 
     var board = ev.parentElement.parentElement
     if (
@@ -1034,7 +1034,7 @@ function aiNumericalBoardLoop(board, ai) {
 }
 
 
-function buyBoard(id, cost = false, details = {}) {
+window.buyBoard = function(id, cost = false, details = {}) {
     details = {
         costs: {
             speed: "5 tics",
@@ -1172,7 +1172,7 @@ function buyBoard(id, cost = false, details = {}) {
     }
 }
 
-function buyAI(id, type, name = names[randInt(0, names.length)]) {
+window.buyAI = function(id, type, name = names[randInt(0, names.length)]) {
     if (gameTier.state >= encomny.tierReq["ais"][id]) {
         if (makePurchase(encomny.costs.ais[id])) {
             encomny.costs.ais[id] = multiplyCost(encomny.costs.ais[id], 1.15)
@@ -1688,4 +1688,4 @@ document.getElementById("usernameButton").onclick = function() {
 
 }
 
-//})()
+})()

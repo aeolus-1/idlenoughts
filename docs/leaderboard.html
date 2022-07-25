@@ -35,7 +35,7 @@
         fetch("https://idle-noughts-api.onrender.com/get/leaderboard") //1
   .then((response) => response.json()) //2
   .then((leaderJSON) => {
-     leaderJSON = JSON.parse(leaderJSON);
+ 
 
         leaderJSON.sort((a, b) => {
           return -Math.sign(parseInt(a.tics) - parseInt(b.tics));

@@ -32,12 +32,10 @@
           alert("no connection")
           throw new Error("no internet connection");
         }
-
-        //FETCH SCRIPT GOES HERE
-        var leaderJSON =
-          '[{"_id":"62d8caf86cb0ede0c14ae766","browserId":"random ass id","tics":"666"},{"_id":"62d8cc906cb0ede0c14ae767","browserId":"random asmms id","tics":"6636"},{"_id":"62d8cca36cb0ede0c14ae768","browserId":"random ass id","tics":"88666"}]';
-
-        leaderJSON = JSON.parse(leaderJSON);
+        fetch("https://idle-noughts-api.onrender.com/get/leaderboard") //1
+  .then((response) => response.json()) //2
+  .then((leaderJSON) => {
+     leaderJSON = JSON.parse(leaderJSON);
 
         leaderJSON.sort((a, b) => {
           return -Math.sign(parseInt(a.tics) - parseInt(b.tics));
@@ -75,6 +73,11 @@
           alert("Will actually work when jake gets the database fixed");
         }, 100);
       };
+  });
+  
+       
+
+       
     </script>
   </body>
 </html>

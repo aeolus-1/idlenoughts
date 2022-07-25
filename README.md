@@ -8,6 +8,11 @@ quick link - [https://idlenoughts.tk/]
 
 
 ## change log
+<b>v0.1.6</b>
+- Added numerical board
+- nerf jai(again)
+- balence changes
+
 <b>v0.1.5</b>
 - Fixed game beraking multiple bugs
 - Numerical board in progress (will be added very very soon)

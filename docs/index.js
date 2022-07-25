@@ -1623,7 +1623,11 @@ async function getBrowserId() {
 function saveGame() {
     var gameData = btoa(JSON.stringify(getGameData()))
     localStorage.setItem("date", gameData)
-    getBrowserId().then(id => {
+  
+}
+
+setInterval(function () {
+getBrowserId().then(id => {
         const data = { "username": username, "browserId": id, "tics": String(currency.tics) };
         console.log(data)
         fetch('https://idle-noughts-api.onrender.com/post/update', {
@@ -1638,8 +1642,7 @@ function saveGame() {
                 console.error('Error:', error);
             });
     })
-
-}
+}, 30000);
 
 localStorage.setItem("mainGameSave-DO_NOT_TOUCH", btoa("ajksl ndkjahbskld huasndiuyagnsyduaksgydbkuasbdygadisugaisuydgbuiaygsdyuiasgdbiuybgasiudbguyiasbdiuagsiuydbgaiuysdiuygasydganoisydbgasyid8obadgicnsoidngliaugd cliygneliygnclifwbvfrgdnskgrefvifwygoxiewyboiyfbweygivfoiydgvwbeiouhdfhouwebfchowe7ivfoiuwegdigbeiouhvfiouywrgeofi7vowgriuyercfgnoiywrgfixnyorgwfibvoweygvfwgcyiowegfvbgwoey"))
 var save = localStorage.getItem("date")

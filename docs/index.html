@@ -20,7 +20,6 @@
     <script src="break_infinity.min.js"></script>
     <script src="ad-notations.min.js"></script>
     <script src="names.js"></script>
-
     <script>
         var Board = {
 
@@ -173,6 +172,7 @@ upsetMove(move) {
                     "basic": "17.8 tics",
                     "gold-basic": "1000 tics",
                     "1d": "1500 tics",
+                    "numerical": "0 tics",
 
                 },
                 "ais":{
@@ -200,7 +200,12 @@ upsetMove(move) {
                         "disadvantage":0.6,
                     },
                     "1d":{
-                        "skill":0.2,
+                        "skill":0.9,
+                        "speed":250,
+                        "disadvantage":0,
+                    },
+                    "numerical":{
+                        "skill":0.85,
                         "speed":250,
                         "disadvantage":0,
                     }
@@ -261,8 +266,13 @@ upsetMove(move) {
                     ],
                     "1d":[
                         "0 tacs",
-                        "1 tacs",
+                        "1 tics",
                         "2 tics",
+                    ],
+                    "numerical":[
+                        "0 tacs",
+                        "1 tacs",
+                        "8 tics",
                     ],
                 },
             },
@@ -271,6 +281,7 @@ upsetMove(move) {
                     "basic": 1,
                     "gold-basic": 1,
                     "1d":2,
+                    "numerical":99,
 
                 },
                 "ais":{
@@ -429,7 +440,7 @@ upsetMove(move) {
         
         <div class="headerContent">
             <h1>Idle Noughts</h1>
-            <h2>B.Reef</h2>
+            <h2>B.reef</h2>
             <p><a href="https://github.com/aeolus-1/idlenoughts">->github here<-</a></p>
             <p><a href="leaderboard.html" target="_blank">Leaderboard</a></p>
             <button id="restartButton">Restart</button>
@@ -499,20 +510,15 @@ upsetMove(move) {
     <div id="helpMenu" class="overlayScreen">
         <button id="helpClose">Close</button>
         <h1>How To Play</h1>
-        <b> Introduction </b> 
-        <p> Welcome to Idle Noughts, the worlds first Idle TicTacToe game. In Idle Noughts you play TicTacToe to get money called ‘Tics’, use Tics to buy AI, use AI to play more, play more to get more Tics, use more Tics to get more upgrades. Every time you lose or tie you get a tac, save Tacs for later.</p>
-        
-        <b> Artificial Intelligence </b> 
-        <p> In Idle Noughts you can buy AIs to do your work, you lazy fuck. There are different AI’s who act differently. You start with a Jai bot. Each bot has increasing intelligence, except Jai bot who doesn’t have a brain because he is retarted. In the tool bar you can upgrade your bots to play faster and learn faster. Learning faster means they will win more games. If your bot isn’t satisfactory you can recycle it for spare Tics, I recommend recycling Jai bot because it is a needy whore.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut venenatis justo, id congue mauris. Sed ultricies dignissim massa, ac pharetra nisi tempor ac. Curabitur non tempor orci. Pellentesque fringilla venenatis dolor, eu venenatis sem. Ut mollis nisi et enim gravida, at volutpat ligula rhoncus. Donec efficitur et enim a feugiat. Cras tempus enim erat, in rutrum tortor scelerisque non. Fusce augue risus, imperdiet sit amet convallis ac, molestie in enim. Mauris lacus leo, ornare eu nunc quis, dignissim fermentum mauris. Integer ullamcorper augue magna, a lacinia nulla consectetur at. Praesent blandit felis id urna tempus eleifend. Suspendisse potenti. Morbi ullamcorper tincidunt tortor, ut gravida metus faucibus et. Nulla fringilla, libero ut ullamcorper elementum, tortor leo dictum massa, porta sodales nisl nulla congue orci. Quisque luctus diam sit amet sem posuere scelerisque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
 
-        <b> Boards </b> 
-        <p> To progress, buy more boards. There are many types of boards with different advantages. We know you are a selfish bastard so you can buy as many boards as you like. Upgrades are listed on the board and to delete a board use the button in the top right.</p>
+        <p>Sed sed lobortis est, in placerat lacus. Duis ac sollicitudin ante, at feugiat turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum ornare purus eros, sit amet finibus augue rutrum eget. Sed malesuada magna a placerat auctor. Nullam dapibus nisi sed lacus bibendum, vel lacinia justo finibus. Aliquam porttitor semper pharetra. Proin ligula tortor, placerat sed interdum porttitor, cursus eu massa.</p>
 
-        <b> Tics, Tacs, Toes </b> 
-        <p> Every time you lose a game you get a Tac, nobody wants Tacs because it means you suck dick, especially if you are using Jai bots. Luckily for your ungrateful ass you can buy Converter AIs which convert Tacs into something useful such as Tics or Toes.</p>
+        <p>Morbi lobortis odio lectus, sit amet lobortis arcu dapibus quis. Nullam sit amet bibendum sapien. Quisque mi lectus, porta id ligula non, varius aliquam eros. Suspendisse dui justo, lobortis ut neque cursus, fringilla euismod quam. Nam non rhoncus nisi. Nunc sit amet arcu pharetra, pretium massa vel, dapibus nibh. Aenean eget blandit massa. Vivamus egestas nisi sed suscipit vulputate. Quisque pharetra porttitor eros sit amet vestibulum. Aliquam ex nibh, suscipit id cursus vitae, consectetur faucibus metus. Nunc semper orci orci, nec consequat justo eleifend non. Cras vitae semper mi, vel ultrices est. In congue imperdiet hendrerit. Nullam fermentum ex quam, ut tincidunt lorem accumsan eu. Aliquam dictum nisi quis ante mollis, ut consectetur augue vehicula. Proin vestibulum orci mauris, in cursus tortor dapibus sit amet.</p>
 
-        <p> This game is pretty kinky so you can collect Toes which you can use as a currency in the Toe Shop to unlock bonuses and upgrades. You can also upgrade your Tier to unlock more. Earn Tics to get a spot on the leader board and battle to be the biggest Nerd, good luck losers.</p>
-        <i> *DISClAIMER* We love Jai </i>
+        <p>Donec ullamcorper erat mi, eu fermentum justo scelerisque quis. In a quam justo. Cras fermentum in nisi non fringilla. Fusce ipsum nisi, aliquet sed nulla volutpat, vulputate tristique est. Fusce commodo, odio sit amet venenatis condimentum, est arcu consequat ex, sed scelerisque libero felis egestas purus. Sed id semper est, et ornare neque. Fusce laoreet at nisl et semper. Pellentesque odio est, luctus at mattis vitae, rhoncus in risus. Donec tempus nisi massa, ac sodales enim congue in.</p>
+
+        <p>Aenean eget laoreet metus. Sed felis orci, fringilla et dolor et, tempus tempor lectus. Etiam scelerisque felis orci. Cras aliquam, dui pulvinar dapibus egestas, eros nunc egestas magna, non interdum lectus ex at eros. Nulla pulvinar viverra odio, et pharetra leo sollicitudin nec. Pellentesque dignissim, quam quis congue vehicula, mi odio auctor magna, eget tincidunt metus magna sed arcu. Praesent augue velit, finibus sit amet porta ut, scelerisque nec felis. Curabitur scelerisque, orci a dapibus volutpat, augue enim vestibulum mi, vel dapibus justo metus nec nisl. Aliquam a elit in lectus rhoncus cursus et vel est. Suspendisse dictum mauris tincidunt iaculis egestas.</p>
     </div>
     <script>
         document.getElementById("toeShop").style.display = "none"
@@ -625,6 +631,7 @@ upsetMove(move) {
         }
 
         function registerGame(production, num) {
+            console.log(production)
             var gain = production[num+1],
                 num = parseInt(gain.split(" ")[0]),
                 type = gain.split(" ")[1]
@@ -798,6 +805,164 @@ upsetMove(move) {
 
             
         }
+        function mouseClickGameTileNumerical(ev, num) {
+
+            var board = ev.parentElement.parentElement.parentElement
+            if (
+                board.turn == "X" && 
+                ((ev.textContent[0] == "X" || ev.textContent[0] == "O") ? ev.textContent[0] : "") == "" && 
+                board.children[2].children.length < 1 &&
+                board.type != "gold-basic"
+                ) {
+
+                var area = board.children[1],
+                    tile = ev
+
+                    value = tile.textContent[0]
+                area.children[1].appendChild(tile)
+
+                if (value != "" && board.turn == "O") {
+                    
+                    var result = evaluteNumericalBoard(board, "X"),
+                        foundTile = null
+                    
+                    console.log(result)
+                    if (result.winner[0] == 0) {
+                        for (let i = 0; i < area.children[0].children.length; i++) {
+                            const tile = area.children[0].children[i];
+
+                            if (tile.textContent[0] == result.move+1) {
+                                foundTile = tile
+                                break
+                            } 
+                        }
+
+                        if (foundTile != null) {
+                            area.children[2].appendChild(foundTile)
+                        }
+                        
+                    } else {
+                        if (result.winner[0]==1) {
+                            console.log(area.children[1])
+                            area.children[1].textContent = `${result.winner[1][0]}+${result.winner[1][1]}+${result.winner[1][2]}=15`
+                        } else {
+                            area.children[2].textContent = result.winner[1]
+                        }
+                    }
+                } 
+                board.turn = "O"
+            }
+
+
+        }
+        function testNumericalBins(bin1, bin2) {
+            var a = bin1
+            if (a.length >= 3) {
+                for (let i = 0; i < a.length; i++) {
+                        const num1 = a[i];
+                        for (let j = 0; j < a.length; j++) {
+                            const num2 = a[j];
+                            for (let l = 0; l < a.length; l++) {
+                                const num3 = a[l];
+                                if (!(
+                                    [num2, num3].includes(num1) ||
+                                    [num3, num1].includes(num2) ||
+                                    [num1, num2].includes(num3)
+                                )) {
+                                    if ((num2+num3+num1) == 15) {
+                                        return [1, [num1, num2, num3]]
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            a = bin2
+            if (a.length >= 3) {
+                for (let i = 0; i < a.length; i++) {
+                        const num1 = a[i];
+                        for (let j = 0; j < a.length; j++) {
+                            const num2 = a[j];
+                            for (let l = 0; l < a.length; l++) {
+                                const num3 = a[l];
+                                if (!(
+                                    [num2, num3].includes(num1) ||
+                                    [num3, num1].includes(num2) ||
+                                    [num1, num2].includes(num3)
+                                )) {
+                                    if ((num2+num3+num1) == 15) {
+                                        return [-1, [num1, num2, num3]]
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+                return [0]
+        }
+
+        function evaluteNumericalBoard(board, turn, missRate) {
+            var area = board.children[1],
+                bin1 = area.children[1],
+                bin2 = area.children[2]
+
+
+            function collapseBin(bin) {
+                var a = new Array()
+                for (let i = 0; i < bin.children.length; i++) {
+                    const child = bin.children[i];
+                    a.push(parseInt(child.textContent[0]))
+                }
+                return a
+            }
+
+            var aiMove = makeNumericalAiMove({
+                area:collapseBin(area.children[0]),
+                bin1:collapseBin(bin1),
+                bin2:collapseBin(bin2)
+            },
+                (turn=="X")?
+                    ["_", "O", "X"]:["_", "X", "O"]
+
+                
+            ),
+                test = testNumericalBins(collapseBin(bin1), collapseBin(bin2))
+
+            return {
+                move:aiMove,
+                winner:test,
+            }
+            
+            
+        }
+        function makeNumericalAiMove(boardDat, playerTokens) {
+            var board = ["","","","","","","","",""],
+                conversion = [1,6,5,8,4,0,3,2,7]
+
+
+
+
+            boardDat.area.forEach((e)=>{
+                board[conversion.indexOf(e-1)] = playerTokens[0]
+            })
+            boardDat.bin1.forEach((e)=>{
+                board[conversion.indexOf(e-1)] = playerTokens[1]
+            })
+            boardDat.bin2.forEach((e)=>{
+                board[conversion.indexOf(e-1)] = playerTokens[2]
+            })
+            var emptySlots = Board.emptySlots(board)
+
+            var move = lookup3b3[Board.compressBoard(board)]
+            if (move != null) {
+
+                var move = conversion[emptySlots[randInt(0, emptySlots.length-1)]]//((move.y*3)+move.x)]
+
+                return move
+            }
+        }
         
         function boardDivToArray(board) {
             var returnArray = new Array()
@@ -876,7 +1041,7 @@ upsetMove(move) {
         }
        
         function aiBoardLoop(board, ai) {
-            
+
             if (board.turn == "X") {
                 if (ai.stats.missRates[board.type] == undefined) {
                     ai.stats.missRates[board.type] = 0.9
@@ -898,6 +1063,67 @@ upsetMove(move) {
                 }, ((board.turn == "X")?ai.stats.speed:board.stats.speed)*toeSpeedBuff);
             
         }
+
+        function aiNumericalBoardLoop(board, ai) {
+            if (board.turn == "X") {
+                if (ai.stats.missRates[board.type] == undefined) {
+                    ai.stats.missRates[board.type] = 0.9
+
+                }
+
+                ai.train(board.type, ai.stats.learningRate/1000)
+            } 
+
+            var aiSkill = 1-((1-(ai.stats.missRates[board.type]*ai.stats.globalSkill))*(1-board.disadvantage))
+
+            if (board.turn != " ") {
+                var result = evaluteNumericalBoard(board, board.turn, (board.turn=="X")?aiSkill:board.stats.missRate)
+                console.log(result)
+                var area = board.children[1]
+                if (result.move == undefined) {
+                    board.children[1].innerHTML = document.getElementById("presetBoard-numerical").children[0].children[1].innerHTML
+
+                } else 
+                if (result.winner[0] == 0) {
+                        for (let i = 0; i < area.children[0].children.length; i++) {
+                            const tile = area.children[0].children[i];
+
+                            if (tile.textContent[0] == result.move+1) {
+                                foundTile = tile
+                                break
+                            } 
+                        }
+
+                        if (foundTile != null) {
+                            area.children[(board.turn=="X"?1:2)].appendChild(foundTile)
+                        }
+
+                        
+                    } else {
+                        if (result.winner[0]==1) {
+                            area.children[1].textContent = `${result.winner[1][0]}+${result.winner[1][1]}+${result.winner[1][2]}=15`
+                        } else {
+                            area.children[2].textContent = result.winner[1]
+                        }
+
+                        board.children[1].innerHTML = document.getElementById("presetBoard-numerical").children[0].children[1].innerHTML
+
+
+                    }
+                    board.turn = (board.turn=="X")?"O":"X"
+
+            }
+
+            var toeSpeedBuff = 10/(toeEncomny.stats.speed+10)
+            intervals["aiBoardLoop"] = setTimeout(() => {
+                    if (board.children[2].children.length >= 1) {
+
+                        aiNumericalBoardLoop(board, ai)
+                    }
+                }, ((board.turn == "X")?ai.stats.speed:board.stats.speed)*toeSpeedBuff);
+            
+        }
+
 
         function buyBoard(id, cost=false, details={}) {
             details = {
@@ -1272,7 +1498,31 @@ upsetMove(move) {
                             <h3>1D Board</h3>
                             <p>An Irish teen-pop board<br>IDK I don't listen to their music</p>
                             <p>Speed: 250ms<br>Difficulty: 15%</p>
-                            <p>Produces 2 tics per win</p>
+                            <p>Produces 2 tics per win<br>Produces 1 tics on tie</p>
+
+                            <p id="tierReqBox"></p>
+                        </span>
+    
+                    </div>
+                    <div class="buyBlock tooltip" style="height: 150px;" id="numerical-BoardBuyDisplay">
+                        <button style="float: right; width: 60px; height: 100%;" onclick="buyBoard('numerical')">BUY MONEY $$$</button>
+    
+                        <b>Numerical Board</b><br>
+                        <img src="imgs/basicBoard.png" alt="ur gay" width="20%">
+    
+                        <p>
+                            Speed: 250
+                            <br>
+                            Difficulty: 0.25
+                            <br>
+                            Disadvantage: 0
+                        </p>
+
+                        <span id="tooltip" class="tooltiptext">
+                            <h3>Numerical Board</h3>
+                            <p>The only board the AIs might be good</p>
+                            <p>Speed: 250ms<br>Difficulty: 25%</p>
+                            <p>Produces 10 tics per win</p>
 
                             <p id="tierReqBox"></p>
                         </span>
@@ -1419,7 +1669,12 @@ upsetMove(move) {
                         aiDiv.aiObject.droppedElement = ev.target
                         var board = ev.target.parentElement
                         if (board.classList[0] == "board") {
-                            aiBoardLoop(board, aiDiv.aiObject)
+                            if (board.classList[2] == "type-numerical") {
+                                aiNumericalBoardLoop(board, aiDiv.aiObject)
+
+                            } else {
+                                aiBoardLoop(board, aiDiv.aiObject)
+                            }
                         }
                         if (board.id == "botUpgradeDiv") {
                         }
@@ -1515,11 +1770,11 @@ upsetMove(move) {
             </div>
 
             <div id="presetBoard-gold-basic" style="display: none;">
-                <div class="boardHeader">
-                        
-                    <button style="float: right;" id="boardRecycleButton">Delete Board</button>
-                </div>
                 <div class="board type-${id}" id="${Math.random()}">
+                    <div class="boardHeader">
+                        
+                        <button style="float: right;" id="boardRecycleButton">Delete Board</button>
+                    </div>
                     <div class="boardGameArea">                    
                         <div class="boardGameSquare" onclick="mouseClickGameTile(this, 1)">                                            
                         </div>                    
@@ -1553,11 +1808,11 @@ upsetMove(move) {
             </div>
             
             <div id="presetBoard-1d" style="display: none;">
-                <div class="boardHeader">
-                        
-                    <button style="float: right;" id="boardRecycleButton">Delete Board</button>
-                </div>
                 <div class="board type-${id}" id="${Math.random()}">
+                    <div class="boardHeader">
+                        
+                        <button style="float: right;" id="boardRecycleButton">Delete Board</button>
+                    </div>
                     <div class="boardGameArea">                    
                         <div class="boardGameSquare" onclick="mouseClickGameTile(this, 1)">                                            
                         </div>                    
@@ -1578,6 +1833,52 @@ upsetMove(move) {
                         <div class="boardGameSquare" onclick="mouseClickGameTile(this, 9)">                                            
                         </div>                
                     </div>                
+                    <div class="botBoardSlot" ondrop="drop(event)" ondragover="allowDrop(event)">                
+                    </div>
+                    <div class="boardUpgradeArea">
+                        <b>Speed: 1</b>
+                        <button>Upgrade Speed +5%<br>5 tics</button>    <hr>
+
+                        <b>Enemy Skill: 1</b>
+                        <button>Downgrade Skill -5%<br>10 tics</button>    <br>
+                    </div>
+            </div>
+            </div>
+
+            <div id="presetBoard-numerical" style="display: none;">
+                <div class="board type-${id}" id="${Math.random()}">
+                    <div class="boardHeader">
+                        
+                        <button style="float: right;" id="boardRecycleButton">Delete Board</button>
+                    </div>
+                    <div class="boardGameArea">  
+                        <div class="boardGameSquares">
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 1)">1                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 2)">2                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 3)">3                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 4)">4                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 5)">5                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 6)">6                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 7)">7                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 8)">8                                            
+                            </div>                    
+                            <div class="boardGameSquare numberTile" onclick="mouseClickGameTileNumerical(this, 9)">9                                            
+                            </div>  
+                        </div>                  
+                        <div class="boardGameBin numberTile">
+
+                        </div>   
+                        <div class="boardGameBin numberTile">
+
+                        </div>     
+                    </div>           
                     <div class="botBoardSlot" ondrop="drop(event)" ondragover="allowDrop(event)">                
                     </div>
                     <div class="boardUpgradeArea">
@@ -1666,7 +1967,7 @@ upsetMove(move) {
                 };
 
                 setInterval(() => {
-                    (["basic", "gold-basic", "1d"]).forEach((age)=>{
+                    (["basic", "gold-basic", "1d", "numerical"]).forEach((age)=>{
                     setBoardBuy(age)
                 });
                 (["jai", "baby", "mid", "adult", "genius", "tactotic-c", "tac&tictotoe-c"]).forEach((age)=>{
@@ -1754,10 +2055,14 @@ upsetMove(move) {
                 }
                 achievementProgress = saveDat.achievementProgress
 
+                saveDat.encomny.production = encomny.production
+
                 currency = saveDat.currency
                 toeEncomny = saveDat.toeEncomny
                 encomny = saveDat.encomny
                 gameTier = saveDat.gameTier
+
+                
 
                 document.getElementById("boardBin").children[0].remove()
 
@@ -1796,7 +2101,11 @@ upsetMove(move) {
 
 
                     if (bin.parentElement.classList[0] == "board") {
-                        aiBoardLoop(bin.parentElement, board.aiObject)
+                        if (bin.parentElement.classList[2] == "type-numerical") {
+                            aiNumericalBoardLoop(bin.parentElement, board.aiObject)
+                        } else {
+                            aiBoardLoop(bin.parentElement, board.aiObject)
+                        }
                     }
                     if (bin.parentElement.id == "botUpgradeDiv") {
                         setUpgradeDiv(board)

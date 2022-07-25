@@ -97,6 +97,10 @@ i {
     height: 30px;
  }
 
+ .versionDiv {
+     position: fixed;
+ }
+
 
 
 .header {

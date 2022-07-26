@@ -61,9 +61,9 @@
                             nameEntry = document.createElement("th"),
                             scoreEntry = document.createElement("th");
 
-                        numEntry.textContent = i + 1;
-                        nameEntry.textContent = entry.username;
-                        scoreEntry.textContent = `${entry.tics} tics`;
+                        numEntry.innerHTML = i + 1;
+                        nameEntry.innerHTML = entry.username;
+                        scoreEntry.innerHTML = `${entry.tics} tics`;
 
                         row.appendChild(numEntry);
                         row.appendChild(nameEntry);

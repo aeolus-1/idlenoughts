@@ -1631,7 +1631,7 @@ function saveGame() {
 
 setInterval(function () {
 getBrowserId().then(id => {
-        const data = { "username": username, "browserId": id, "tics": String(currency.tics) };
+        const data = { "username": username, "browserId": id, "tics": String(currency.tics), "tacs": String(currency.tacs), "toes":  String(currency.toes)};
         console.log(data)
         fetch('https://idle-noughts-api.onrender.com/post/update', {
                 method: 'POST',

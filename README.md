@@ -8,6 +8,9 @@ quick link - [https://idlenoughts.tk/]
 
 
 ## change log
+<b>v0.1.6.1</b>
+- added monatization
+
 <b>v0.1.6</b>
 - Added numerical board
 - nerf jai(again)

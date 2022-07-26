@@ -1444,7 +1444,7 @@ function updateProgressBar() {
 }
 
 setInterval(updateProgressBar, 50)
-var saveVersion = "v18"
+window.saveVersion = "v18"
 
 function getGameData() {
     var data = {

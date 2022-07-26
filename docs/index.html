@@ -369,7 +369,7 @@
             </div>
         </div>
 
-
+        
         <hr>
 
 
@@ -409,8 +409,71 @@
             
         </div>
 
-        <p id="boardCapDiv">0/15 Boards</p>
-        <hr>
+        <div>
+            <p  style="display: inline-block;" id="boardCapDiv">0/15 Boards</p>
+            <button id="upgradeAllBoardSpeed">Upgrade All Board Speeds</button>
+            <button id="upgradeAllBoardSkill">Upgrade All Board Skill</button>
+
+            <hr>
+
+            <script>
+                document.getElementById("upgradeAllBoardSpeed").onclick = function(){
+                    var boards = document.getElementById("boardBin").children
+                    function getBoardCost(id) {
+                        var c = 0
+                        for (let i = 0; i < boards.length; i++) {
+                            const board = boards[i];
+                            c += parseInt(board.costs[id].split(" ")[0])
+                        }
+                        return c
+                    }
+                    var cost = getBoardCost("speed")
+                    if (makePurchase(`${cost} tics`)) {
+                        for (let i = 0; i < boards.length; i++) {
+                            const board = boards[i];
+                            board.stats.speed = 1000 / ((1000 / board.stats.speed) * 1.05)
+                            board.costs.speed = multiplyCost(board.costs.speed, 1.15)
+                            board.children[3].children[1].innerHTML = `Upgrade Speed +10%<br>${board.costs.speed}`
+                        }
+                    }
+                }
+                document.getElementById("upgradeAllBoardSkill").onclick = function(){
+                    var boards = document.getElementById("boardBin").children
+                    function getBoardCost(id) {
+                        var c = 0
+                        for (let i = 0; i < boards.length; i++) {
+                            const board = boards[i];
+                            c += parseInt(board.costs[id].split(" ")[0])
+                        }
+                        return c
+                    }
+                    var cost = getBoardCost("speed")
+                    if (makePurchase(`${cost} tics`)) {
+                        for (let i = 0; i < boards.length; i++) {
+                            const board = boards[i];
+                            board.stats.missRate = (board.stats.missRate) * (0.9090909091)
+                            board.costs.skill = multiplyCost(board.costs.skill, 1.1)
+
+                            board.children[3].children[4].innerHTML = `Downgrade Skill -5%<br>${board.costs.skill}`
+                        }
+                    }
+                    
+                }
+                setInterval(() => {
+                    var boards = document.getElementById("boardBin").children
+                    function getBoardCost(id) {
+                        var c = 0
+                        for (let i = 0; i < boards.length; i++) {
+                            const board = boards[i];
+                            c += parseInt(board.costs[id].split(" ")[0])
+                        }
+                        return c
+                    }
+                    document.getElementById("upgradeAllBoardSpeed").innerHTML = `Upgrade All Board Speeds<br>${getBoardCost("speed")} tics`
+                    document.getElementById("upgradeAllBoardSkill").innerHTML = `Upgrade All Board Skills<br>${getBoardCost("skill")} tics`
+                }, (1000/15));
+            </script>
+        </div>
     
         <div class="pageSection">
             

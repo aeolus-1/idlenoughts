@@ -116,7 +116,7 @@ var currency = {
         cost: "5 toes",
     }
 
-function makePurchase(cost) {
+window.makePurchase = function(cost) {
     var num = parseInt(cost.split(" ")[0]),
         curr = cost.split(" ")[1]
 
@@ -142,7 +142,7 @@ var toeEncomny = {
         skill: 1,
     }
 }
-var startEncomny = {
+window.startEncomny = {
         costs: {
             "boards": {
                 "basic": "17.8 tics",
@@ -273,10 +273,10 @@ var startEncomny = {
 
         }
 
-    },
-    encomny = JSON.parse(JSON.stringify(startEncomny))
+    }
+    window.encomny = JSON.parse(JSON.stringify(startEncomny))
 
-function multiplyCost(cost, float) {
+window.multiplyCost = function(cost, float) {
     var num = cost.split(" ")[0],
         curr = cost.split(" ")[1]
 
@@ -1035,6 +1035,7 @@ function aiNumericalBoardLoop(board, ai) {
 
 
 window.buyBoard = function(id, cost = false, details = {}) {
+    console.log()
     details = {
         costs: {
             speed: "5 tics",
@@ -1444,9 +1445,9 @@ function updateProgressBar() {
 }
 
 setInterval(updateProgressBar, 50)
-window.saveVersion = "v18"
+window.saveVersion = "v19"
 
-function getGameData() {
+window.getGameData = function() {
     var data = {
             saveVersion: saveVersion,
             currency: JSON.parse(JSON.stringify(currency)),
@@ -1474,6 +1475,7 @@ function getGameData() {
         })
     }
 
+
     for (let i = 0; i < ais.length; i++) {
         const ai = ais[i];
         data.ais.push({
@@ -1490,12 +1492,12 @@ function getGameData() {
         })
     }
 
-
     return data
 }
 
 window.loadGameData = function(data) {
     var saveDat = JSON.parse(data)
+    console.log(saveDat)
     restartGame()
     currency = {
         "tics": 0,
@@ -1516,7 +1518,6 @@ window.loadGameData = function(data) {
     toeEncomny = saveDat.toeEncomny
     encomny = saveDat.encomny
     gameTier = saveDat.gameTier
-
 
 
     document.getElementById("boardBin").children[0].remove()

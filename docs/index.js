@@ -1301,7 +1301,7 @@ document.getElementById("recycleButton").onclick = function() {
     }
 }
 
-function allowDrop(ev) {
+window.allowDrop = function(ev) {
     if (((ev.target.id == "botBinDiv") ? true : ev.target.children.length <= 0)) {
         if (true) {
             ev.preventDefault();
@@ -1309,11 +1309,11 @@ function allowDrop(ev) {
     }
 }
 
-function drag(ev) {
+window.drag = function(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function drop(ev) {
+window.drop = function(ev) {
     document.getElementById("upgradeDivSpeedUp").innerHTML = "Upgrade Speed"
     document.getElementById("upgradeDivSkillUp").innerHTML = "Upgrade Skill"
     if (true) {
@@ -1494,7 +1494,7 @@ function getGameData() {
     return data
 }
 
-function loadGameData(data) {
+window.loadGameData = function(data) {
     var saveDat = JSON.parse(data)
     restartGame()
     currency = {
@@ -1502,6 +1502,9 @@ function loadGameData(data) {
         "tacs": 0,
         "toes": 0,
         "tempToes": 0,
+    }
+    if (saveDat.achievementProgress instanceof Array) {
+        saveDat.achievementProgress = [50, 0]
     }
     achievementProgress = saveDat.achievementProgress
 

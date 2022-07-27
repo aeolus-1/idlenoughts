@@ -315,8 +315,7 @@ function roundCostToFormat(value) {
     }
 }
 
-
-var ais = new Array()
+window.ais = new Array()
 
 function listAi(ele, id, type) {
     var newAi = new(function(ele, id) {

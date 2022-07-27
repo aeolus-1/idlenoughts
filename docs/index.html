@@ -64,7 +64,66 @@
             </div>
             <h2>Upgrade Ais</h2>
             <button id="upgradeDivSpeedUp">Upgrade Speed<br></button>
-            <button id="upgradeDivSkillUp">Upgrade Skill</button>
+            <button id="upgradeDivSkillUp">Upgrade Skill</button><br><br>
+            <button id="upgradeAllAiSpeed">Upgrade All Board Speeds</button>
+            <button id="upgradeAllAiSkill">Upgrade All Board Skill</button>
+
+           
+
+            <script>
+                document.getElementById("upgradeAllAiSpeed").onclick = function(){
+                   
+                    function getBoardCost(id) {
+                        var c = 0
+                        for (let i = 0; i < ais.length; i++) {
+                            const ai = ais[i];
+                            c += parseInt(ai.costs[id].split(" ")[0])
+                        }
+                        return c
+                    }
+                    var cost = getBoardCost("speed")
+                    if (makePurchase(`${cost} tics`)) {
+                        for (let i = 0; i < ais.length; i++) {
+                            const ai = ais[i];
+                            ai.stats.speed = Math.round(ai.stats.speed * 0.9090909091)
+                            ai.costs.speed = multiplyCost(ai.costs.speed, 1.2)
+                            
+                        }
+                    }
+                }
+                document.getElementById("upgradeAllAiSkill").onclick = function(){
+                    function getBoardCost(id) {
+                        var c = 0
+                        for (let i = 0; i < ais.length; i++) {
+                            const ai = ais[i];
+                            c += parseInt(ai.costs[id].split(" ")[0])
+                        }
+                        return c
+                    }
+                    var cost = getBoardCost("skill")
+                    if (makePurchase(`${cost} tics`)) {
+                        for (let i = 0; i < ais.length; i++) {
+                            const ai = ais[i];
+                            
+                            ai.stats.globalSkill = (ai.stats.globalSkill) * 1.1
+                            ai.costs.skill = multiplyCost(ai.costs.skill, 1.1)
+                        }
+                    }
+                    
+                }
+                setInterval(() => {
+                    function getBoardCost(id) {
+                        var c = 0
+                        for (let i = 0; i < ais.length; i++) {
+                            const ai = ais[i];
+                            c += parseInt(ai.costs[id].split(" ")[0])
+                        }
+                        return c
+                    }
+                    document.getElementById("upgradeAllAiSpeed").innerHTML = `Upgrade All Ai Speeds<br>${getBoardCost("speed")} tics`
+                    document.getElementById("upgradeAllAiSkill").innerHTML = `Upgrade All Ai Skills<br>${getBoardCost("skill")} tics`
+                }, (1000/15));
+            </script>
         </div>
         <div id="botRecycleDiv" style="position: fixed; right: 10px; top: 10px;" >
             <div id="botRecycleSlot" class="aiHolder" style="width: 130px; height: 130px; margin-top: 0px;" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -89,6 +148,7 @@
             <button class="toeShopButt"><b>Skill</b><p>2x</p><p>15%+</p><p>Yay</p></button>
 
         </div>
+       
         <div class="toeShopDiv">
 
             <h3 id="toeShopTierDisplay">Tier 1</h3><br>

@@ -10,6 +10,7 @@ quick link - [https://idlenoughts.tk/]
 ## change log
 <b>v0.1.6.2</b>
 - added upgrade all boards options
+- added upgrade all ais options
 
 <b>v0.1.6.1</b>
 - added monatization

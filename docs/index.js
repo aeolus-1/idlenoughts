@@ -1631,7 +1631,7 @@ function saveGame() {
 
 setInterval(function () {
 getBrowserId().then(id => {
-        const data = { "username": username, "browserId": id, "tics": String(currency.tics), "tacs": String(currency.tacs), "toes":  String(currency.toes)};
+        const data = { "username": username, "browserId": id, "tics": atob(localStorage.getItem("username-highscore")), "tacs": String(currency.tacs), "toes":  String(currency.toes)};
         console.log(data)
         fetch('https://idle-noughts-api.onrender.com/post/update', {
                 method: 'POST',
@@ -1675,7 +1675,16 @@ window.addEventListener('beforeunload', function(e) {
     e.returnValue = '';
 });
 
-
+setInterval(()=>{
+    var highscore = localStorage.getItem("username-highscore")
+    if (highscore == null) {
+        highscore = 'MA=='
+    }
+    highscore = parseInt(atob(highscore))
+    if (currency.tics > highscore) {
+        localStorage.setItem("username-highscore", btoa(currency.tics))   
+    }
+}, 50)
 
 
 var username = localStorage.getItem("username-idleNoughts") || prompt("Username?")

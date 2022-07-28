@@ -627,7 +627,7 @@ function updateToeDisplay() {
 
         button.children[1].textContent = `${round(toeEncomny.stats[upgrade], 1)}`
 
-        button.children[3].textContent = `${round(toeEncomny.costs[upgrade], 1)} Toes`
+        button.children[3].textContent = `${sh(round(toeEncomny.costs[upgrade], 1))} Toes`
 
     }
 }

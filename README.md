@@ -3,7 +3,7 @@
 WIP idle game  
 plz dont read code
 
-quick link - [https://idlenoughts.tk/]
+quick link - [https://xl83.dev/crispykitchen/idlenoughts/]
 
 
 
